@@ -6,7 +6,7 @@ const nextConfig = {
   //   loader: "custom",
   // },
   trailingSlash: true,
-  //  basePath: "/",
+  basePath: "/kandidatky-obecni",
   experimental: {
     images: {
       unoptimized: true,
