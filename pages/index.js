@@ -1,14 +1,12 @@
 import Head from "next/head";
-import Image from "next/image";
-import imgLoader from "../utils/imgLoader";
+import readData from "../utils/dataProvider";
 import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function Home({ okresy }) {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Krásná nová appka</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Kdo kandiduje</title>
       </Head>
 
       <main className={styles.main}>
@@ -16,4 +14,15 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const okresy = readData("2022/cnumnuts").filter(
+    nuts => nuts.NUTS.length === 6
+  );
+  return {
+    props: {
+      okresy,
+    },
+  };
 }

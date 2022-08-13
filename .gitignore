@@ -11,6 +11,9 @@
 # next.js
 /.next/
 
+# raw data
+/data
+
 # production
 /build
 
