@@ -1,5 +1,5 @@
 import Head from "next/head";
-import readData from "../utils/dataProvider";
+import readCSVdata from "../utils/dataProvider";
 import styles from "../styles/Home.module.css";
 
 export default function Home({ okresy }) {
@@ -10,14 +10,18 @@ export default function Home({ okresy }) {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Ahoj!!!!</h1>
+        <ul>
+          {okresy.map(okres => (
+            <li key={okres.NUTS}>{okres.NAZEVNUTS}</li>
+          ))}
+        </ul>
       </main>
     </div>
   );
 }
 
 export async function getStaticProps() {
-  const okresy = readData("2022/cnumnuts").filter(
+  const okresy = readCSVdata("2022/cnumnuts").filter(
     nuts => nuts.NUTS.length === 6
   );
   return {
