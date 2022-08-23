@@ -2,13 +2,20 @@ import okresy from "../../../data/processed/okresy.json";
 import styles from "../../../styles/Obec.module.css";
 
 export async function getStaticProps({ params }) {
-  // generate data for each okres
+  //info o obci
   const okresData = okresy.find(okres => okres.key === params.okres);
-  const zastupitelstva = require(`../../../data/processed/${okresData.key}/zastupitelstva.json`);
-  const obecData = zastupitelstva.find(obec => obec.key === params.obec);
+  const okresZastupitelstva = require(`../../../data/processed/${okresData.key}/zastupitelstva.json`);
+  const obecData = okresZastupitelstva.find(obec => obec.key === params.obec);
+  //seznam kandidátů
+  const okresKandidati = require(`../../../data/processed/${okresData.key}/kandidati.json`);
+  const obecKandidati = okresKandidati.filter(
+    kandidat => kandidat.KODZASTUP === obecData.KODZASTUP
+  );
+
   return {
     props: {
       obecData,
+      obecKandidati,
     },
   };
 }
@@ -24,7 +31,7 @@ export async function getStaticPaths() {
   };
 }
 
-const Obec = ({ obecData }) => {
+const Obec = ({ obecData, obecKandidati }) => {
   return (
     <>
       <h1>{obecData.NAZEVZAST}</h1>
