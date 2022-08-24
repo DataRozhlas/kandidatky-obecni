@@ -1,14 +1,20 @@
 import Link from "next/link";
-import okresy from "../../data/processed/okresy.json";
+import { tsvParse } from "d3-dsv";
+
+import okresy from "../../public/okresy.json";
+
 import styles from "../../styles/Okres.module.css";
 
 export async function getStaticProps({ params }) {
   // generate data for each okres
   const okresData = okresy.find(okres => okres.key === params.okres);
+  const zastupitelstva = await fetch(
+    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/${okresData.key}/zastupitelstva.tsv`
+  ).then(res => res.text());
   return {
     props: {
       okresData,
-      zastupitelstva: require(`../../data/processed/${okresData.key}/zastupitelstva.json`),
+      zastupitelstva: tsvParse(zastupitelstva),
     },
   };
 }

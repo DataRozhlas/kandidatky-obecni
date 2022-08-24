@@ -1,16 +1,23 @@
-import okresy from "../../../data/processed/okresy.json";
+import { tsvParse } from "d3-dsv";
+
+import okresy from "../../../public/okresy.json";
+
 import styles from "../../../styles/Obec.module.css";
 
 export async function getStaticProps({ params }) {
   //info o obci
-  const okresData = okresy.find(okres => okres.key === params.okres);
-  const okresZastupitelstva = require(`../../../data/processed/${okresData.key}/zastupitelstva.json`);
+  const okresZastupitelstva = await fetch(
+    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/${params.okres}/zastupitelstva.tsv`
+  )
+    .then(res => res.text())
+    .then(res => tsvParse(res));
   const obecData = okresZastupitelstva.find(obec => obec.key === params.obec);
   //seznam kandidátů
-  const okresKandidati = require(`../../../data/processed/${okresData.key}/kandidati.json`);
-  const obecKandidati = okresKandidati.filter(
-    kandidat => kandidat.KODZASTUP === obecData.KODZASTUP
-  );
+  const obecKandidati = await fetch(
+    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/${params.okres}/${params.obec}/kandidati.tsv`
+  )
+    .then(res => res.text())
+    .then(res => tsvParse(res));
 
   return {
     props: {
@@ -20,7 +27,11 @@ export async function getStaticProps({ params }) {
   };
 }
 export async function getStaticPaths() {
-  const zastupitelstva = require(`../../../data/processed/zastupitelstva.json`);
+  const zastupitelstva = await fetch(
+    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/zastupitelstva.tsv`
+  )
+    .then(res => res.text())
+    .then(res => tsvParse(res));
 
   return {
     paths: zastupitelstva.map(obec => {
