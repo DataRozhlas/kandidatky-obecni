@@ -17,7 +17,7 @@ export default function Home({ okresy }) {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Kdo kandiduje</title>
+        <title>Kdo kandiduje v komunálních volbách</title>
       </Head>
 
       <main className={styles.main}>
