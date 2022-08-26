@@ -2,11 +2,10 @@ import { useState, useContext } from "react";
 import { tsvParse } from "d3-dsv";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import GlobalContext from "../../../utils/global-context";
+import GlobalContext from "../../../utils/globalContext";
 
 import okresy from "../../../public/okresy.json";
 
-import { Text, Link } from "@nextui-org/react";
 import styles from "../../../styles/Obec.module.css";
 
 const queryClient = new QueryClient();
@@ -36,15 +35,11 @@ const ObecPage = ({ obecData, okresData }) => {
 
   return (
     <>
-      <Text h1>{obecData.NAZEVZAST}</Text>
-      <Text h4>
-        <Link
-          href={`https://data.irozhlas.cz/kandidatky-obecni/${okresData.key}/${obecData.key}`}
-        >
-          okres {okresData.NAZEVNUTS}{" "}
-        </Link>
-        , {obecData.MANDATY} mandátů
-      </Text>
+      <h1>{obecData.NAZEVZAST}</h1>
+      <h4>
+        okres {okresData.NAZEVNUTS} , {obecData.MANDATY} mandátů
+      </h4>
+      <p>{data.length}</p>
     </>
   );
 };

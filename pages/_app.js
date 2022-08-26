@@ -1,23 +1,46 @@
-import { NextUIProvider } from "@nextui-org/react";
+import * as React from "react";
+import PropTypes from "prop-types";
+import Head from "next/head";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider } from "@emotion/react";
+import theme from "../utils/theme";
+import createEmotionCache from "../utils/createEmotionCache";
+
 import { useState } from "react";
-import GlobalContext from "../utils/global-context";
+import GlobalContext from "../utils/globalContext";
 
-import "../styles/globals.css";
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
 
-function MyApp({ Component, pageProps }) {
+function MyApp(props) {
   const [rok, setRok] = useState({ rok: [2022], update });
 
   function update(data) {
     setState(Object.assign({}, state, data));
   }
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   return (
-    <GlobalContext.Provider value={rok}>
-      <NextUIProvider>
-        <Component {...pageProps} />
-      </NextUIProvider>
-    </GlobalContext.Provider>
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      <ThemeProvider theme={theme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <GlobalContext.Provider value={rok}>
+          <Component {...pageProps} />
+        </GlobalContext.Provider>{" "}
+      </ThemeProvider>
+    </CacheProvider>
   );
 }
 
 export default MyApp;
+
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  emotionCache: PropTypes.object,
+  pageProps: PropTypes.object.isRequired,
+};
