@@ -1,23 +1,15 @@
 import { useState, useContext } from "react";
 import { tsvParse } from "d3-dsv";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import { useQuery } from "react-query";
 import GlobalContext from "../../../utils/globalContext";
 
 import okresy from "../../../public/okresy.json";
 
 import styles from "../../../styles/Obec.module.css";
 
-const queryClient = new QueryClient();
-
 const Obec = ({ obecData, okresData }) => {
   const global = useContext(GlobalContext);
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ObecPage obecData={obecData} okresData={okresData} global={global} />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  );
+  return <ObecPage obecData={obecData} okresData={okresData} global={global} />;
 };
 
 const ObecPage = ({ obecData, okresData }) => {
