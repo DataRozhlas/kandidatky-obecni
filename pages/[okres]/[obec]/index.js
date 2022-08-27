@@ -7,10 +7,10 @@ import okresy from "../../../public/okresy.json";
 
 import styles from "../../../styles/Obec.module.css";
 
-const Obec = ({ obecData, okresData }) => {
+export default function Obec({ obecData, okresData }) {
   const global = useContext(GlobalContext);
   return <ObecPage obecData={obecData} okresData={okresData} global={global} />;
-};
+}
 
 const ObecPage = ({ obecData, okresData }) => {
   const { isLoading, error, data } = useQuery("candidatesData", () =>
@@ -31,12 +31,10 @@ const ObecPage = ({ obecData, okresData }) => {
       <h4>
         okres {okresData.NAZEVNUTS} , {obecData.MANDATY} mandátů
       </h4>
-      <p>{data.length}</p>
+      <p>{data.length} kandidátů</p>
     </>
   );
 };
-
-export default Obec;
 
 export async function getStaticProps({ params }) {
   //info o obci
