@@ -1,40 +1,49 @@
-import { useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { tsvParse } from "d3-dsv";
 import { useQuery } from "react-query";
 import GlobalContext from "../../../utils/globalContext";
+import { Grid } from "@mui/material";
+import NajdiObec from "../../../components/NajdiObec";
+import ObecInfo from "../../../components/ObecInfo";
+import RokSwitch from "../../../components/RokSwitch";
 
 import okresy from "../../../public/okresy.json";
 
 import styles from "../../../styles/Obec.module.css";
 
 export default function Obec({ obecData, okresData }) {
-  const global = useContext(GlobalContext);
-  return <ObecPage obecData={obecData} okresData={okresData} global={global} />;
-}
-
-const ObecPage = ({ obecData, okresData }) => {
-  const { isLoading, error, data } = useQuery("candidatesData", () =>
-    fetch(
+  const fetchCandidates = async () => {
+    const data = await fetch(
       `https://data.irozhlas.cz/kandidatky-obecni-data/2022/${okresData.key}/${obecData.key}/kandidati.tsv`
     )
       .then(res => res.text())
-      .then(res => tsvParse(res))
+      .then(res => tsvParse(res));
+    return data;
+  };
+
+  const global = useContext(GlobalContext);
+
+  const { isLoading, error, data } = useQuery(
+    ["candidates", obecData.KODZASTUP],
+    fetchCandidates
   );
-
   if (isLoading) return "Stahuji data...";
-
   if (error) return "Stala se chyba: " + error.message;
 
   return (
-    <>
-      <h1>{obecData.NAZEVZAST}</h1>
-      <h4>
-        okres {okresData.NAZEVNUTS} , {obecData.MANDATY} mandátů
-      </h4>
-      <p>{data.length} kandidátů</p>
-    </>
+    <Grid container spacing={2} mt={1} direction="column">
+      <Grid item>
+        <NajdiObec />
+      </Grid>
+      <Grid item>
+        <ObecInfo obecData={obecData} okresData={okresData} data={data} />
+      </Grid>
+      <Grid item>
+        <RokSwitch />
+      </Grid>
+    </Grid>
   );
-};
+}
 
 export async function getStaticProps({ params }) {
   //info o obci

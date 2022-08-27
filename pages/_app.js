@@ -18,7 +18,7 @@ const queryClient = new QueryClient();
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp(props) {
-  const [rok, setRok] = useState({ rok: [2022], update });
+  const [rok, setRok] = useState({ rok: 2022, update });
 
   function update(data) {
     setState(Object.assign({}, state, data));
