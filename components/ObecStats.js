@@ -1,9 +1,15 @@
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { tsvParse } from "d3-dsv";
+
+import Graf from "./Graf";
+import Tablica from "./Tablica";
 
 import { Typography, Grid, CircularProgress } from "@mui/material";
 
 const ObecStats = ({ rok, obecData, okresData }) => {
+  const [vybraneStrany, setVybraneStrany] = useState([]);
+
   const fetchCandidates = async () => {
     const data = await fetch(
       `https://data.irozhlas.cz/kandidatky-obecni-data/${rok}/${okresData.key}/${obecData.key}/kandidati.tsv`
@@ -41,13 +47,31 @@ const ObecStats = ({ rok, obecData, okresData }) => {
     );
 
   return (
-    <Grid item>
-      <Typography variant="body">
-        {data.length} kandidátů | průměrný věk{" "}
-        {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")} let |{" "}
-        {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} % žen
-      </Typography>
-    </Grid>
+    <>
+      <Grid item>
+        <Typography variant="body">
+          {data.length} kandidátů | průměrný věk{" "}
+          {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")} let |{" "}
+          {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} % žen
+        </Typography>
+      </Grid>
+      <Grid item>
+        {/* <Graf
+          vybraniKandidati={data}
+          vybarveniKandidati={data}
+          isMobile={false}
+          vybraneStrany={vybraneStrany}
+          setVybraneStrany={setVybraneStrany}
+        ></Graf> */}
+      </Grid>
+      <Grid item>
+        <Tablica
+          vybarveniKandidati={data}
+          isMobile={false}
+          //  ciselniky={ciselniky}
+        />
+      </Grid>
+    </>
   );
 };
 
