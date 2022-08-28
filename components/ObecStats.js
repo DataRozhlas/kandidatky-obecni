@@ -1,22 +1,53 @@
-import { Typography, Container } from "@mui/material";
+import { useQuery } from "react-query";
+import { tsvParse } from "d3-dsv";
 
-const ObecStats = ({ candidates }) => {
+import { Typography, Grid, CircularProgress } from "@mui/material";
+
+const ObecStats = ({ rok, obecData, okresData }) => {
+  const fetchCandidates = async () => {
+    const data = await fetch(
+      `https://data.irozhlas.cz/kandidatky-obecni-data/${rok}/${okresData.key}/${obecData.key}/kandidati.tsv`
+    )
+      .then(res => res.text())
+      .then(res => tsvParse(res));
+    return data;
+  };
+
+  const { isLoading, error, data } = useQuery(
+    ["candidates", rok, obecData.KODZASTUP],
+    fetchCandidates
+  );
+  if (isLoading)
+    return (
+      <Grid item>
+        <CircularProgress />
+      </Grid>
+    );
+  if (error) return <Grid item>{"Stala se chyba: " + error.message}</Grid>;
+
   const vek =
-    candidates.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
-    candidates.length;
+    data.reduce((acc, curr) => acc + Number(curr.VEK), 0) / data.length;
   const zen =
-    candidates.reduce((acc, curr) => {
+    data.reduce((acc, curr) => {
       if (curr.POHLAVI === "F") return acc + 1;
       return acc;
-    }, 0) / candidates.length;
+    }, 0) / data.length;
+
+  if (isNaN(vek))
+    return (
+      <Grid item>
+        {"Data nejsou k dispozici. Zkuste jiný rok nebo jinou obec."}
+      </Grid>
+    );
+
   return (
-    <Container>
+    <Grid item>
       <Typography variant="body">
-        {candidates.length} kandidátů | průměrný věk{" "}
+        {data.length} kandidátů | průměrný věk{" "}
         {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")} let |{" "}
         {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} % žen
       </Typography>
-    </Container>
+    </Grid>
   );
 };
 

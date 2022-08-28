@@ -17,12 +17,14 @@ export default function Obec({ obecData, okresData }) {
       <Grid item>
         <NajdiObec />
       </Grid>
-      <ObecContainer
-        obecData={obecData}
-        okresData={okresData}
-        rok={rok}
-        setRok={setRok}
-      />
+      <Grid item>
+        <ObecContainer
+          obecData={obecData}
+          okresData={okresData}
+          rok={rok}
+          setRok={setRok}
+        />
+      </Grid>
     </Grid>
   );
 }

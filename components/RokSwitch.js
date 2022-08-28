@@ -1,4 +1,4 @@
-import { ToggleButton, ToggleButtonGroup, Container } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup, Grid } from "@mui/material";
 
 const RokSwitch = ({ rok, setRok }) => {
   const handleChange = event => {
@@ -6,7 +6,7 @@ const RokSwitch = ({ rok, setRok }) => {
   };
 
   return (
-    <Container>
+    <Grid item>
       <ToggleButtonGroup
         value={rok}
         exclusive
@@ -30,7 +30,7 @@ const RokSwitch = ({ rok, setRok }) => {
           2022
         </ToggleButton>
       </ToggleButtonGroup>
-    </Container>
+    </Grid>
   );
 };
 

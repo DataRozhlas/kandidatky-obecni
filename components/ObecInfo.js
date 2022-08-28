@@ -1,9 +1,9 @@
-import { Typography, Container } from "@mui/material";
+import { Typography, Grid } from "@mui/material";
 import Link from "../utils/Link";
 
 const ObecInfo = ({ okresData, obecData }) => {
   return (
-    <Container>
+    <Grid item>
       <Typography variant="h1">{obecData.NAZEVZAST}</Typography>
       <Typography variant="h6">
         <Link href={`/${okresData.key}`}>okres {okresData.NAZEVNUTS}</Link>
@@ -12,7 +12,7 @@ const ObecInfo = ({ okresData, obecData }) => {
         {Number(obecData.POCOBYV).toLocaleString("cs-CZ")} obyvatel |{" "}
         {obecData.MANDATY} mandátů
       </Typography>
-    </Container>
+    </Grid>
   );
 };
 
