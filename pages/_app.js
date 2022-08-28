@@ -9,20 +9,12 @@ import createEmotionCache from "../utils/createEmotionCache";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
-import { useState } from "react";
-import GlobalContext from "../utils/globalContext";
-
 const queryClient = new QueryClient();
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp(props) {
-  const [rok, setRok] = useState({ rok: 2022, update });
-
-  function update(data) {
-    setState(Object.assign({}, state, data));
-  }
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   return (
@@ -33,12 +25,10 @@ function MyApp(props) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <GlobalContext.Provider value={rok}>
-          <QueryClientProvider client={queryClient}>
-            <Component {...pageProps} />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
-        </GlobalContext.Provider>{" "}
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
       </ThemeProvider>
     </CacheProvider>
   );

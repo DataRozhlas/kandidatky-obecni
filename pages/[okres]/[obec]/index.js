@@ -1,46 +1,28 @@
-import { useEffect, useContext } from "react";
+import { useState } from "react";
 import { tsvParse } from "d3-dsv";
-import { useQuery } from "react-query";
-import GlobalContext from "../../../utils/globalContext";
 import { Grid } from "@mui/material";
+
 import NajdiObec from "../../../components/NajdiObec";
-import ObecInfo from "../../../components/ObecInfo";
-import RokSwitch from "../../../components/RokSwitch";
+import ObecContainer from "../../../components/ObecContainer";
 
 import okresy from "../../../public/okresy.json";
 
 import styles from "../../../styles/Obec.module.css";
 
 export default function Obec({ obecData, okresData }) {
-  const fetchCandidates = async () => {
-    const data = await fetch(
-      `https://data.irozhlas.cz/kandidatky-obecni-data/2022/${okresData.key}/${obecData.key}/kandidati.tsv`
-    )
-      .then(res => res.text())
-      .then(res => tsvParse(res));
-    return data;
-  };
-
-  const global = useContext(GlobalContext);
-
-  const { isLoading, error, data } = useQuery(
-    ["candidates", obecData.KODZASTUP],
-    fetchCandidates
-  );
-  if (isLoading) return "Stahuji data...";
-  if (error) return "Stala se chyba: " + error.message;
+  const [rok, setRok] = useState("2022");
 
   return (
-    <Grid container spacing={2} mt={1} direction="column">
+    <Grid container spacing={3} mt={1} direction="column">
       <Grid item>
         <NajdiObec />
       </Grid>
-      <Grid item>
-        <ObecInfo obecData={obecData} okresData={okresData} data={data} />
-      </Grid>
-      <Grid item>
-        <RokSwitch />
-      </Grid>
+      <ObecContainer
+        obecData={obecData}
+        okresData={okresData}
+        rok={rok}
+        setRok={setRok}
+      />
     </Grid>
   );
 }

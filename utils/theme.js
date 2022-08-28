@@ -5,6 +5,9 @@ import { red } from "@mui/material/colors";
 let theme = createTheme({
   typography: {
     fontSize: 12,
+    h1: {
+      fontSize: "3.2rem",
+    },
   },
   palette: {
     primary: {
