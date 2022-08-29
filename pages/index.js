@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Link from "next/link";
+import Link from "../utils/Link";
 import Grid from "@mui/material/Grid";
 import NajdiObec from "../components/NajdiObec";
 

@@ -1,5 +1,10 @@
 import { useRouter } from "next/router";
-import { Container, TextField, Autocomplete } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Autocomplete,
+  CircularProgress,
+} from "@mui/material";
 import { useQuery } from "react-query";
 import { tsvParse } from "d3-dsv";
 
@@ -20,7 +25,12 @@ export default function NajdiObec() {
     { staleTime: Infinity }
   );
 
-  if (isLoading) return "Stahuji data...";
+  if (isLoading)
+    return (
+      <Container maxWidth="xs">
+        <CircularProgress />
+      </Container>
+    );
 
   if (error) return "Stala se chyba: " + error.message;
 

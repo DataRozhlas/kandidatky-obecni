@@ -20,14 +20,17 @@ const ObecStats = ({ rok, obecData, okresData }) => {
   };
   const kandidati = useQuery(["kandidati", rok, obecData.KODZASTUP], fetchData);
   const strany = useQuery(["strany", rok, obecData.KODZASTUP], fetchData);
-  if (kandidati.isLoading)
+  if (kandidati.isLoading || strany.isLoading)
     return (
       <Grid item>
         <CircularProgress />
       </Grid>
     );
   if (kandidati.error)
-    return <Grid item>{"Stala se chyba: " + error.message}</Grid>;
+    return <Grid item>{"Stala se chyba: " + kandidati.error.message}</Grid>;
+
+  if (strany.error)
+    return <Grid item>{"Stala se chyba: " + strany.error.message}</Grid>;
 
   const vek =
     kandidati.data.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
@@ -63,16 +66,15 @@ const ObecStats = ({ rok, obecData, okresData }) => {
           setVybraneStrany={setVybraneStrany}
         ></Graf> */}
       </Grid>
-      {!strany.isLoading && !kandidati.isLoading && (
-        <Grid item>
-          <Tablica
-            vybarveniKandidati={kandidati.data}
-            isMobile={false}
-            strany={strany.data}
-            //  ciselniky={ciselniky}
-          />
-        </Grid>
-      )}
+
+      <Grid item>
+        <Tablica
+          vybarveniKandidati={kandidati.data}
+          isMobile={false}
+          strany={strany.data}
+          //  ciselniky={ciselniky}
+        />
+      </Grid>
     </>
   );
 };

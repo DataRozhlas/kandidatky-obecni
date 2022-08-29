@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { tsvParse } from "d3-dsv";
 import { Grid } from "@mui/material";
+import Head from "next/head";
 
 import NajdiObec from "../../../components/NajdiObec";
 import ObecContainer from "../../../components/ObecContainer";
@@ -13,19 +14,26 @@ export default function Obec({ obecData, okresData }) {
   const [rok, setRok] = useState("2022");
 
   return (
-    <Grid container spacing={3} mt={1} direction="column">
-      <Grid item>
-        <NajdiObec />
+    <>
+      <Head>
+        <title>
+          {`${obecData.NAZEVZAST} – interaktivní kandidátky pro komunální volby`}
+        </title>
+      </Head>
+      <Grid container spacing={3} mt={1} direction="column">
+        <Grid item>
+          <NajdiObec />
+        </Grid>
+        <Grid item>
+          <ObecContainer
+            obecData={obecData}
+            okresData={okresData}
+            rok={rok}
+            setRok={setRok}
+          />
+        </Grid>
       </Grid>
-      <Grid item>
-        <ObecContainer
-          obecData={obecData}
-          okresData={okresData}
-          rok={rok}
-          setRok={setRok}
-        />
-      </Grid>
-    </Grid>
+    </>
   );
 }
 

@@ -1,55 +1,76 @@
 import { DataGrid, csCZ } from "@mui/x-data-grid";
 import { Tooltip, Typography } from "@mui/material";
 
-const getFullName = params => {
-  const prvniTitul = params.getValue(params.id, "TITULPRED");
-  return (
-    <Tooltip
-      arrow
-      enterTouchDelay={0}
-      title={`${params.getValue(params.id, "TITULPRED") || ""} ${
-        params.getValue(params.id, "JMENO") || ""
-      } ${params.getValue(params.id, "PRIJMENI") || ""} ${
-        params.getValue(params.id, "TITULZA") || ""
-      }`}
-    >
-      <Typography
-        style={{ cursor: "help", overflow: "hidden", textOverflow: "ellipsis" }}
-      >
-        <span style={{ fontSize: "70%" }}>
-          {typeof prvniTitul === "undefined" ? "" : prvniTitul + "\xa0"}
-        </span>
-        {params.getValue(params.id, "JMENO") || ""}&nbsp;
-        <strong>{params.getValue(params.id, "PRIJMENI") || ""}</strong>&nbsp;
-        <span style={{ fontSize: "70%" }}>
-          {params.getValue(params.id, "TITULZA") || ""}
-        </span>
-      </Typography>
-    </Tooltip>
-  );
-};
-
-const ukazPovolani = params => {
-  return (
-    <Tooltip
-      arrow
-      enterTouchDelay={0}
-      title={params.getValue(params.id, "POVOLANI")}
-    >
-      <span
-        style={{
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          cursor: "help",
-        }}
-      >
-        {params.getValue(params.id, "POVOLANI")}
-      </span>
-    </Tooltip>
-  );
-};
-
 const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
+  const getFullName = params => {
+    const prvniTitul = params.getValue(params.id, "TITULPRED");
+    return (
+      <Tooltip
+        arrow
+        enterTouchDelay={0}
+        title={`${params.getValue(params.id, "TITULPRED") || ""} ${
+          params.getValue(params.id, "JMENO") || ""
+        } ${params.getValue(params.id, "PRIJMENI") || ""} ${
+          params.getValue(params.id, "TITULZA") || ""
+        }`}
+      >
+        <Typography
+          style={{
+            cursor: "help",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          <span style={{ fontSize: "70%" }}>
+            {typeof prvniTitul === "undefined" ? "" : prvniTitul + "\xa0"}
+          </span>
+          {params.getValue(params.id, "JMENO") || ""}&nbsp;
+          <strong>{params.getValue(params.id, "PRIJMENI") || ""}</strong>&nbsp;
+          <span style={{ fontSize: "70%" }}>
+            {params.getValue(params.id, "TITULZA") || ""}
+          </span>
+        </Typography>
+      </Tooltip>
+    );
+  };
+
+  const getOStrana = params => {
+    const strana = strany.find(s => s.OSTRANA === params.row.OSTRANA);
+    return (
+      <Tooltip arrow enterTouchDelay={0} title={strana.NAZEVCELK}>
+        <Typography
+          style={{
+            cursor: "help",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {strana.NAZEVCELK}
+        </Typography>
+      </Tooltip>
+    );
+  };
+
+  const ukazPovolani = params => {
+    return (
+      <Tooltip
+        arrow
+        enterTouchDelay={0}
+        title={params.getValue(params.id, "POVOLANI")}
+      >
+        <span
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            cursor: "help",
+          }}
+        >
+          {params.getValue(params.id, "POVOLANI")}
+        </span>
+      </Tooltip>
+    );
+  };
+
   const columns = [
     {
       field: "PORCISLO",
@@ -66,6 +87,9 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
       // valueGetter: getFullName,
       // valueFormatter: getFullName,
       renderCell: getFullName,
+      valueGetter: params => {
+        return params.row.JMENO + " " + params.row.PRIJMENI;
+      },
       sortComparator: (v1, v2, cellParams1, cellParams2) =>
         cellParams1.api
           .getCellValue(cellParams1.id, "PRIJMENI")
@@ -80,21 +104,10 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
       field: "OSTRANA",
       headerName: "Strana",
       description: "volební strana",
-      renderCell: params => {
-        const strana = strany.find(s => s.OSTRANA === params.value);
-        return (
-          <Tooltip arrow enterTouchDelay={0} title={strana.ZKRATKAO30}>
-            <Typography
-              style={{
-                cursor: "help",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {strana.ZKRATKAO30}
-            </Typography>
-          </Tooltip>
-        );
+      renderCell: getOStrana,
+      valueGetter: params => {
+        const strana = strany.find(s => s.OSTRANA === params.row.OSTRANA);
+        return strana.NAZEVCELK;
       },
       minWidth: 100,
       flex: 3,

@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Link from "../../utils/Link";
+import Head from "next/head";
 import { tsvParse } from "d3-dsv";
 
 import okresy from "../../public/okresy.json";
@@ -30,6 +31,12 @@ export async function getStaticPaths() {
 const Okres = ({ okresData, zastupitelstva }) => {
   return (
     <>
+      <Head>
+        <title>
+          {`Okres ${okresData.NAZEVNUTS} – interaktivní kandidátky pro komunální volby`}
+        </title>
+      </Head>
+
       <h1>{okresData.NAZEVNUTS}</h1>
       <ul>
         {zastupitelstva.map(zastupitelstvo => (
