@@ -53,17 +53,16 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
   const columns = [
     {
       field: "PORCISLO",
-      headerName: "#",
+      headerName: "Pořadí",
       description: "pořadí na kandidátce",
-      type: "number",
       flex: 1,
       minWidth: 15,
       disableColumnMenu: true,
+      type: "number",
     },
     {
       field: "fullName",
       headerName: "Celé jméno",
-      filterable: false,
       // valueGetter: getFullName,
       // valueFormatter: getFullName,
       renderCell: getFullName,
@@ -97,17 +96,16 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
           </Tooltip>
         );
       },
-      disableColumnMenu: true,
       minWidth: 100,
       flex: 3,
     },
     {
       field: "VEK",
       headerName: "Věk",
-      type: "number",
       flex: 1,
       disableColumnMenu: true,
       minWidth: 15,
+      type: "number",
     },
     {
       field: "POVOLANI",
@@ -129,7 +127,7 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
             rows={vybarveniKandidati.map(kandidat => {
               return {
                 ...kandidat,
-                id: `${kandidat.KODZASTUP}${kandidat.POR_STR_HL}${kandidat.PORCISLO}`,
+                id: `${kandidat.KODZASTUP}-${kandidat.COBVODU}-${kandidat.POR_STR_HL}-${kandidat.PORCISLO}`,
               };
             })}
             columns={columns}

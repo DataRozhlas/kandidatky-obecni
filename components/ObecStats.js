@@ -63,7 +63,7 @@ const ObecStats = ({ rok, obecData, okresData }) => {
           setVybraneStrany={setVybraneStrany}
         ></Graf> */}
       </Grid>
-      {strany.isSuccess && (
+      {!strany.isLoading && !kandidati.isLoading && (
         <Grid item>
           <Tablica
             vybarveniKandidati={kandidati.data}
