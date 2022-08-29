@@ -49,7 +49,7 @@ const ukazPovolani = params => {
   );
 };
 
-const Tablica = ({ vybarveniKandidati, isMobile, ciselniky }) => {
+const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
   const columns = [
     {
       field: "PORCISLO",
@@ -57,7 +57,7 @@ const Tablica = ({ vybarveniKandidati, isMobile, ciselniky }) => {
       description: "pořadí na kandidátce",
       type: "number",
       flex: 1,
-      minWidth: 70,
+      minWidth: 15,
       disableColumnMenu: true,
     },
     {
@@ -77,98 +77,44 @@ const Tablica = ({ vybarveniKandidati, isMobile, ciselniky }) => {
       flex: 3,
       minWidth: 140,
     },
-    // {
-    //   field: "k",
-    //   headerName: "Kraj",
-    //   description: "volební kraj",
-    //   valueGetter: params => {
-    //     const kraj = ciselniky.kraje.filter(k => k.VOLKRAJ === params.value);
-    //     return kraj[0].NAZVOLKRAJ;
-    //   },
-    //   disableColumnMenu: true,
-    //   minWidth: 100,
-    //   flex: 2,
-    // },
-    // {
-    //   field: "n",
-    //   headerName: "Strana",
-    //   description: "navrhující strana",
-    //   renderCell: params => {
-    //     const strana = ciselniky.nstrany.filter(
-    //       s => s.NSTRANA === params.value
-    //     )[0];
-    //     return (
-    //       <Tooltip arrow enterTouchDelay={0} title={strana.ZKRATKAN30}>
-    //         <Typography
-    //           style={{
-    //             cursor: "help",
-    //             overflow: "hidden",
-    //             textOverflow: "ellipsis",
-    //           }}
-    //         >
-    //           {strana.ZKRATKAN8}
-    //         </Typography>
-    //       </Tooltip>
-    //     );
-    //   },
-    //   disableColumnMenu: true,
-    //   minWidth: 100,
-    //   flex: 1,
-    // },
+    {
+      field: "OSTRANA",
+      headerName: "Strana",
+      description: "volební strana",
+      renderCell: params => {
+        const strana = strany.find(s => s.OSTRANA === params.value);
+        return (
+          <Tooltip arrow enterTouchDelay={0} title={strana.ZKRATKAO30}>
+            <Typography
+              style={{
+                cursor: "help",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {strana.ZKRATKAO30}
+            </Typography>
+          </Tooltip>
+        );
+      },
+      disableColumnMenu: true,
+      minWidth: 100,
+      flex: 3,
+    },
     {
       field: "VEK",
       headerName: "Věk",
       type: "number",
       flex: 1,
       disableColumnMenu: true,
-      minWidth: 90,
+      minWidth: 15,
     },
     {
       field: "POVOLANI",
       headerName: "Povolání",
-      flex: 4,
+      flex: 6,
       renderCell: ukazPovolani,
       minWidth: 120,
-    },
-    {
-      field: "b",
-      headerName: "Bydliště",
-      description: "bydliště kandidáta",
-      flex: 3,
-      minWidth: 120,
-    },
-
-    {
-      field: "t1",
-      headerName: "Titul před jménem",
-      flex: 1,
-      hide: true,
-    },
-    {
-      field: "j",
-      headerName: "Jméno",
-      flex: 2,
-      hide: true,
-    },
-    {
-      field: "p",
-      headerName: "Příjmení",
-      flex: 2,
-      hide: true,
-    },
-    {
-      field: "t2",
-      headerName: "Titul za jménem",
-      flex: 1,
-      hide: true,
-    },
-
-    {
-      field: "o",
-      headerName: "Počet obyvatel",
-      flex: 2,
-      hide: true,
-      type: "number",
     },
   ];
 
