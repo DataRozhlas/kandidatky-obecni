@@ -8,11 +8,13 @@
 .singleChart {
   width: 100%;
   max-width: 500px;
+  min-height: 320px;
 }
 
 .doubleChart {
   width: 100%;
   max-width: 500px;
+  min-height: 320px;
 }
 
 .jednoGraf {
