@@ -4,22 +4,39 @@ import { tsvParse } from "d3-dsv";
 
 import Graf from "./Graf";
 import Tablica from "./Tablica";
+import Legenda from "./Legenda";
 
 import { Typography, Grid, CircularProgress } from "@mui/material";
+
+const fetchData = async context => {
+  const urlDetail =
+    context.queryKey[0] === "cvs"
+      ? "2022/cvs.tsv"
+      : `${context.queryKey[1]}/${context.queryKey[3].key}/${context.queryKey[2].key}/${context.queryKey[0]}.tsv`;
+  const data = await fetch(
+    `https://data.irozhlas.cz/kandidatky-obecni-data/${urlDetail}`
+  )
+    .then(res => res.text())
+    .then(res => tsvParse(res));
+  return data;
+};
+
+const countStrany = cislo => {
+  if (cislo === 1) return "1 strana";
+  if (cislo > 1 && cislo < 5) return `${cislo} strany`;
+  return `${cislo} stran`;
+};
 
 const ObecStats = ({ rok, obecData, okresData }) => {
   const [vybraneStrany, setVybraneStrany] = useState([]);
 
-  const fetchData = async context => {
-    const data = await fetch(
-      `https://data.irozhlas.cz/kandidatky-obecni-data/${rok}/${okresData.key}/${obecData.key}/${context.queryKey[0]}.tsv`
-    )
-      .then(res => res.text())
-      .then(res => tsvParse(res));
-    return data;
-  };
-  const kandidati = useQuery(["kandidati", rok, obecData.KODZASTUP], fetchData);
-  const strany = useQuery(["strany", rok, obecData.KODZASTUP], fetchData);
+  const kandidati = useQuery(
+    ["kandidati", rok, obecData, okresData],
+    fetchData
+  );
+  const strany = useQuery(["strany", rok, obecData, okresData], fetchData);
+  const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
+
   if (kandidati.isLoading || strany.isLoading)
     return (
       <Grid item>
@@ -52,19 +69,20 @@ const ObecStats = ({ rok, obecData, okresData }) => {
     <>
       <Grid item>
         <Typography variant="body">
-          {kandidati.data.length} kandidátů | průměrný věk{" "}
-          {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")} let |{" "}
-          {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} % žen
+          {countStrany(strany.data.length)} | {kandidati.data.length} kandidátů
+          | průměrný věk {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")}{" "}
+          let | {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} % žen
         </Typography>
       </Grid>
       <Grid item>
-        {/* <Graf
-          vybraniKandidati={data}
-          vybarveniKandidati={data}
+        <Graf
+          kandidati={kandidati.data}
+          vybarveniKandidati={kandidati.data}
           isMobile={false}
           vybraneStrany={vybraneStrany}
           setVybraneStrany={setVybraneStrany}
-        ></Graf> */}
+        ></Graf>
+        <Legenda vybraneStrany={vybraneStrany} />
       </Grid>
 
       <Grid item>

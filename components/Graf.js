@@ -1,25 +1,26 @@
 import { useRef, useEffect } from "react";
 import { selectAll } from "d3-selection";
 import barvickyZdroj from "../public/barvicky.json";
+import { Container } from "@mui/material";
 
 import GrafGenerator from "../utils/GrafGenerator.js";
 
 const Graf = ({
-  vybraniKandidati,
+  kandidati,
   vybarveniKandidati,
   isMobile,
   vybraneStrany,
   setVybraneStrany,
 }) => {
   const containerRef = useRef(null);
-  const meritko = vybraniKandidati.length > 856 ? 10 : 1;
+  const meritko = kandidati.length > 1849 ? 10 : 1;
 
   // kolik stran, jež mají definovanou barvičku, je mezi vybranými kandidáty a které to jsou?
-  const zjistiVybraneStrany = (vybraniKandidati, barvickyZdroj) => {
-    const barvicky = barvickyZdroj.map(d => Object.assign({}, d));
-    const strany = vybraniKandidati
+  const zjistiVybraneStrany = (kandidati, barvickyZdroj) => {
+    const barvicky = barvickyZdroj.map(d => Object.assign({}, d)); //zkopíruj objekt s barvičkami
+    const strany = kandidati
       .reduce((acc, curr) => {
-        const barvicka = acc.filter(b => b.vstrana === curr.v)[0];
+        const barvicka = acc.filter(b => b.vstrana === curr.NSTRANA)[0];
         const index = acc.indexOf(barvicka);
         if (index !== -1) {
           const novaBarvicka = { ...barvicka, pocet: barvicka.pocet + 1 };
@@ -39,7 +40,7 @@ const Graf = ({
       return acc + curr.pocet;
     }, 0);
     const result =
-      vybraniKandidati.length > pocetVybarvenych
+      kandidati.length > pocetVybarvenych
         ? [
             ...strany,
             {
@@ -47,7 +48,7 @@ const Graf = ({
               barva: "#349DB2",
               vstrana: 0,
               pocet: Math.floor(
-                (vybraniKandidati.length - pocetVybarvenych) / meritko
+                (kandidati.length - pocetVybarvenych) / meritko
               ),
             },
           ]
@@ -57,9 +58,9 @@ const Graf = ({
   };
 
   useEffect(() => {
-    const kulicky = zjistiVybraneStrany(vybraniKandidati, barvickyZdroj);
+    const kulicky = zjistiVybraneStrany(kandidati, barvickyZdroj);
     setVybraneStrany(kulicky);
-  }, [vybraniKandidati]);
+  }, [kandidati]);
 
   useEffect(() => {
     selectAll(".graf").remove();
@@ -74,10 +75,9 @@ const Graf = ({
       );
       destroyFn = destroy;
       nodesFn = nodes;
-      // console.log(destroyFn);
     }
     //console.log(nodesFn());
-    return [destroyFn, nodesFn];
+    //  return [destroyFn, nodesFn];
   }, [vybraneStrany]);
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const Graf = ({
     //console.log(vybraneStrany);
     const vybarvenych = vybraneStrany.map(s => {
       if (s.vstrana !== 0) {
-        return vybarveniKandidati.filter(k => k.v === s.vstrana).length;
+        return vybarveniKandidati.filter(k => k.NSTRANA === s.vstrana).length;
       } else return 0;
     });
 
@@ -120,20 +120,22 @@ const Graf = ({
     //  console.log(vybarvenych);
   }, [vybraneStrany, vybarveniKandidati]);
 
-  // const kulicky = vyrobKulicky(vybraniKandidati, vybraneStrany);}, [vybraneStrany])
+  // const kulicky = vyrobKulicky(kandidati, vybraneStrany);}, [vybraneStrany])
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        width: "100%",
-        display: "flex",
-        flexWrap: "wrap",
-        minHeight: isMobile
-          ? window.innerHeight / 1.15
-          : window.innerHeight / 1.7,
-      }}
-    ></div>
+    <Container>
+      <div
+        ref={containerRef}
+        style={{
+          width: "100%",
+          display: "flex",
+          flexWrap: "wrap",
+          minHeight: isMobile
+            ? window.innerHeight / 1.15
+            : window.innerHeight / 1.7,
+        }}
+      ></div>
+    </Container>
   );
 };
 

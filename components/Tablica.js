@@ -107,7 +107,7 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
       renderCell: getOStrana,
       valueGetter: params => {
         const strana = strany.find(s => s.OSTRANA === params.row.OSTRANA);
-        return strana.NAZEVCELK;
+        return strana.NAZEVCELK + " " + strana.ZKRATKAO8;
       },
       minWidth: 100,
       flex: 3,
