@@ -15,12 +15,12 @@
 
 .jednoGraf {
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .dvouGraf {
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 @media screen and (min-width: 600px) {
