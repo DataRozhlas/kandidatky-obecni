@@ -6,10 +6,12 @@
 }
 
 .singleChart {
+  width: 100%;
   max-width: 500px;
 }
 
 .doubleChart {
+  width: 100%;
   max-width: 500px;
 }
 
