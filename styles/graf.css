@@ -3,18 +3,13 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  border-color: black;
-  border-width: 1px;
-  border-style: dashed;
 }
 
 .singleChart {
-  background-color: aliceblue;
   max-width: 500px;
 }
 
 .doubleChart {
-  background-color: aliceblue;
   max-width: 500px;
 }
 
