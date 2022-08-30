@@ -8,6 +8,7 @@ import theme from "../utils/theme";
 import createEmotionCache from "../utils/createEmotionCache";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import "../styles/graf.css";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +25,7 @@ function MyApp(props) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
         />
-        <title>Interaktivní kandidátky 2022 – komunální volby 2022</title>
+        <title>Komunální volby – interaktivní kandidátky</title>
       </Head>
 
       <CacheProvider value={emotionCache}>

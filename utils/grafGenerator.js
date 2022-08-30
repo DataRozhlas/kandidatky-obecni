@@ -8,12 +8,12 @@ import {
 } from "d3-force";
 
 const GrafGenerator = (container, kulicky, isMobile) => {
-  //console.log(kulicky);
   const containerRect = container.getBoundingClientRect();
   const height = containerRect.height;
   const width = containerRect.width;
-
   //console.log(container, containerRect, height, width);
+  //console.log(kulicky, isMobile, width);
+  const viewBox = [-160, -160, 320, 320];
 
   if (kulicky.length > 1) {
     // rozděl kuličky na obarvené podle strany a ostatní
@@ -36,18 +36,12 @@ const GrafGenerator = (container, kulicky, isMobile) => {
       )
       .force("charge", forceManyBody().strength(2)) //.distanceMax(200)) //-200 100
       .stop();
-
     const svg1 = select(container)
+      .append("div")
+      .attr("class", "doubleChart")
       .append("svg")
-      .attr("width", isMobile ? width : width / 2)
-      .attr("height", isMobile ? height / 2 : height)
-      .attr(
-        "viewBox",
-        isMobile
-          ? [-width / 2, -height / 4, width, height / 2]
-          : [-width / 4, -height / 2, width / 2, height]
-      )
-      .attr("class", "graf");
+      .attr("class", "graf")
+      .attr("viewBox", viewBox);
 
     const node1 = svg1
       .append("g")
@@ -100,16 +94,11 @@ const GrafGenerator = (container, kulicky, isMobile) => {
       .force("y", forceY())
       .force("charge", forceManyBody().strength(-3));
     const svg2 = select(container)
+      .append("div")
+      .attr("class", "doubleChart")
       .append("svg")
-      .attr("width", isMobile ? width : width / 2)
-      .attr("height", isMobile ? height / 2 : height)
-      .attr(
-        "viewBox",
-        isMobile
-          ? [-width / 2, -height / 4, width, height / 2]
-          : [-width / 4, -height / 2, width / 2, height]
-      )
-      .attr("class", "graf");
+      .attr("class", "graf")
+      .attr("viewBox", viewBox);
 
     const node2 = svg2
       .append("g")
@@ -133,14 +122,18 @@ const GrafGenerator = (container, kulicky, isMobile) => {
       return obj;
     });
 
+    // KDYŽ je jenom jeden graf
+
     const simulation = forceSimulation(nodes)
       .force("x", forceX())
       .force("y", forceY())
       .force("charge", forceManyBody().strength(-3));
     const svg = select(container)
+      .append("div")
+      .attr("class", "singleChart")
       .append("svg")
-      .attr("viewBox", [-width / 2, -height / 2, width, height])
-      .attr("class", "graf");
+      .attr("class", "graf")
+      .attr("viewBox", viewBox);
 
     const node = svg
       .append("g")
@@ -155,7 +148,6 @@ const GrafGenerator = (container, kulicky, isMobile) => {
       node.attr("cx", d => d.x).attr("cy", d => d.y);
     });
   }
-
   return {
     destroy: () => {
       return simulation.stop();

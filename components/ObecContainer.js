@@ -4,7 +4,7 @@ import ObecStats from "./ObecStats";
 
 import { Grid, Container } from "@mui/material";
 
-const ObecContainer = ({ obecData, okresData, rok, setRok }) => {
+const ObecContainer = ({ obecData, okresData, rok, setRok, isMobile }) => {
   return (
     <Container>
       <Grid container direction="column" spacing={1}>
@@ -14,6 +14,7 @@ const ObecContainer = ({ obecData, okresData, rok, setRok }) => {
           rok={rok}
           obecData={obecData}
           okresData={okresData}
+          isMobile={isMobile}
         ></ObecStats>
       </Grid>
     </Container>

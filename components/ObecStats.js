@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { tsvParse } from "d3-dsv";
 
@@ -27,7 +27,7 @@ const countStrany = cislo => {
   return `${cislo} stran`;
 };
 
-const ObecStats = ({ rok, obecData, okresData }) => {
+const ObecStats = ({ rok, obecData, okresData, isMobile }) => {
   const [vybraneStrany, setVybraneStrany] = useState([]);
 
   const kandidati = useQuery(
@@ -75,20 +75,20 @@ const ObecStats = ({ rok, obecData, okresData }) => {
         </Typography>
       </Grid>
       <Grid item>
+        {isMobile && <Legenda vybraneStrany={vybraneStrany} />}
         <Graf
           kandidati={kandidati.data}
           vybarveniKandidati={kandidati.data}
-          isMobile={false}
+          isMobile={isMobile}
           vybraneStrany={vybraneStrany}
           setVybraneStrany={setVybraneStrany}
         ></Graf>
-        <Legenda vybraneStrany={vybraneStrany} />
       </Grid>
-
+      {!isMobile && <Legenda vybraneStrany={vybraneStrany} />}
       <Grid item>
         <Tablica
           vybarveniKandidati={kandidati.data}
-          isMobile={false}
+          isMobile={isMobile}
           strany={strany.data}
           //  ciselniky={ciselniky}
         />

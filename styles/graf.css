@@ -1,0 +1,35 @@
+.chartWrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  border-color: black;
+  border-width: 1px;
+  border-style: dashed;
+}
+
+.singleChart {
+  background-color: aliceblue;
+  max-width: 500px;
+}
+
+.doubleChart {
+  background-color: aliceblue;
+  max-width: 500px;
+}
+
+.jednoGraf {
+  width: 100%;
+  height: auto;
+}
+
+.dvouGraf {
+  width: 100%;
+  height: auto;
+}
+
+@media screen and (min-width: 600px) {
+}
+
+@media screen and (max-width: 600px) {
+}

@@ -8,7 +8,8 @@ const Legenda = ({ vybraneStrany }) => {
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-evenly",
+        justifyContent: "center",
+        gap: 15,
       }}
     >
       {vybraneStrany.map(s => {

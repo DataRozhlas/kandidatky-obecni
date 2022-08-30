@@ -63,7 +63,9 @@ const Graf = ({
   }, [kandidati]);
 
   useEffect(() => {
-    selectAll(".graf").remove();
+    selectAll(".singleChart").remove();
+    selectAll(".doubleChart").remove();
+
     let destroyFn;
     let nodesFn;
     if (containerRef.current) {
@@ -123,18 +125,8 @@ const Graf = ({
   // const kulicky = vyrobKulicky(kandidati, vybraneStrany);}, [vybraneStrany])
 
   return (
-    <Container>
-      <div
-        ref={containerRef}
-        style={{
-          width: "100%",
-          display: "flex",
-          flexWrap: "wrap",
-          minHeight: isMobile
-            ? window.innerHeight / 1.15
-            : window.innerHeight / 1.7,
-        }}
-      ></div>
+    <Container disableGutters>
+      <div ref={containerRef} className="chartWrapper"></div>
     </Container>
   );
 };

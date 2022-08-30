@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { tsvParse } from "d3-dsv";
 import { Grid } from "@mui/material";
 import Head from "next/head";
@@ -12,6 +12,22 @@ import styles from "../../../styles/Obec.module.css";
 
 export default function Obec({ obecData, okresData }) {
   const [rok, setRok] = useState("2022");
+  const [isMobile, setIsMobile] = useState(
+    typeof window === "undefined" ? true : window.innerWidth <= 600
+  );
+
+  useEffect(() => {
+    const handleWindowResize = () => setIsMobile(window.innerWidth <= 600);
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.addEventListener("DOMContentLoaded", handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("DOMContentLoaded", handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   return (
     <>
@@ -30,6 +46,7 @@ export default function Obec({ obecData, okresData }) {
             okresData={okresData}
             rok={rok}
             setRok={setRok}
+            isMobile={isMobile}
           />
         </Grid>
       </Grid>
