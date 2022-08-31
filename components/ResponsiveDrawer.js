@@ -13,8 +13,7 @@ import Filters from "./Filters";
 
 const drawerWidth = 200;
 
-function ResponsiveDrawer(props) {
-  const { window } = props;
+function ResponsiveDrawer({ window, filtr, setFiltr, okres, children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -36,15 +35,17 @@ function ResponsiveDrawer(props) {
         }}
       >
         <Toolbar sx={{ minHeight: { sm: "40px" } }}>
-          <IconButton
-            color="inherit"
-            aria-label="filtrovat"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <FilterAltSharpIcon />
-          </IconButton>
+          {!okres && (
+            <IconButton
+              color="inherit"
+              aria-label="filtrovat"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <FilterAltSharpIcon />
+            </IconButton>
+          )}
           <Link
             href="https://irozhlas.cz/"
             sx={{ ml: "auto", mr: { sm: "auto" } }}
@@ -81,21 +82,23 @@ function ResponsiveDrawer(props) {
             },
           }}
         >
-          <Filters />
+          <Filters filtr={filtr} setFiltr={setFiltr} />
         </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          <Filters />
-        </Drawer>
+        {!okres && (
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+            open
+          >
+            <Filters filtr={filtr} setFiltr={setFiltr} />
+          </Drawer>
+        )}
       </Box>
       <Box
         component="main"
@@ -106,7 +109,7 @@ function ResponsiveDrawer(props) {
         }}
       >
         <Toolbar />
-        {props.children}
+        {children}
       </Box>
     </Box>
   );

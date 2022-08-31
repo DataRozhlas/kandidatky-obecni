@@ -40,7 +40,7 @@ const Okres = ({ okresData, zastupitelstva }) => {
           {`Okres ${okresData.NAZEVNUTS} – interaktivní kandidátky pro komunální volby`}
         </title>
       </Head>{" "}
-      <ResponsiveDrawer>
+      <ResponsiveDrawer okres={true}>
         <Grid container spacing={3} mt={-4} direction="column">
           <Grid item>
             <NajdiObec />

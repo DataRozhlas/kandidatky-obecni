@@ -27,15 +27,33 @@ const countStrany = cislo => {
   return `${cislo} stran`;
 };
 
-const ObecStats = ({ rok, obecData, okresData, isMobile }) => {
+const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
   const [vybraneStrany, setVybraneStrany] = useState([]);
+  const [vybraniKandidati, setVybraniKandidati] = useState([]);
 
+  // load external data
   const kandidati = useQuery(
     ["kandidati", rok, obecData, okresData],
-    fetchData
+    fetchData,
+    { staleTime: Infinity }
   );
   const strany = useQuery(["strany", rok, obecData, okresData], fetchData);
   const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
+
+  // filter candidates
+  const filterCandidates = (kandidati, filtr) => {
+    const result = kandidati
+      .filter(k => filtr.zeny === true || k.POHLAVI === "M")
+      .filter(k => filtr.muzi === true || k.POHLAVI === "F");
+    return result;
+  };
+
+  useEffect(() => {
+    if (kandidati.isSuccess) {
+      const result = filterCandidates(kandidati.data, filtr);
+      setVybraniKandidati(result);
+    }
+  }, [filtr, kandidati.data, kandidati.isSuccess]);
 
   if (kandidati.isLoading || strany.isLoading)
     return (
@@ -83,7 +101,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile }) => {
       <Grid item>
         <Graf
           kandidati={kandidati.data}
-          vybarveniKandidati={kandidati.data}
+          vybarveniKandidati={vybraniKandidati}
           isMobile={isMobile}
           vybraneStrany={vybraneStrany}
           setVybraneStrany={setVybraneStrany}
@@ -96,7 +114,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile }) => {
       )}
       <Grid item mt={3}>
         <Tablica
-          vybarveniKandidati={kandidati.data}
+          vybarveniKandidati={vybraniKandidati}
           isMobile={isMobile}
           strany={strany.data}
           //  ciselniky={ciselniky}

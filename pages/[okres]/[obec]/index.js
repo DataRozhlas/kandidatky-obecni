@@ -15,6 +15,7 @@ import styles from "../../../styles/Obec.module.css";
 
 export default function Obec({ obecData, okresData }) {
   const [rok, setRok] = useState("2022");
+  const [filtr, setFiltr] = useState({ muzi: true, zeny: true });
 
   // zjisti šířku obrazovky
   const [isMobile, setIsMobile] = useState(
@@ -41,7 +42,7 @@ export default function Obec({ obecData, okresData }) {
           {`${obecData.NAZEVZAST} – interaktivní kandidátky pro komunální volby`}
         </title>
       </Head>
-      <ResponsiveDrawer>
+      <ResponsiveDrawer okres={false} filtr={filtr} setFiltr={setFiltr}>
         <Grid container spacing={3} mt={-4} direction="column">
           <Grid item>
             <NajdiObec />
@@ -56,17 +57,10 @@ export default function Obec({ obecData, okresData }) {
                   obecData={obecData}
                   okresData={okresData}
                   isMobile={isMobile}
+                  filtr={filtr}
                 ></ObecStats>
               </Grid>
             </Container>
-
-            {/* <ObecContainer
-            obecData={obecData}
-            okresData={okresData}
-            rok={rok}
-            setRok={setRok}
-            isMobile={isMobile}
-          /> */}
           </Grid>
         </Grid>
       </ResponsiveDrawer>
