@@ -3,7 +3,6 @@ import { Typography, Box } from "@mui/material";
 const Legenda = ({ vybraneStrany }) => {
   return (
     <Box
-      disableGutters
       style={{
         display: "flex",
         flexDirection: "row",

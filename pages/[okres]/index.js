@@ -37,7 +37,7 @@ const Okres = ({ okresData, zastupitelstva }) => {
         </title>
       </Head>
 
-      <h1>{okresData.NAZEVNUTS}</h1>
+      <h1>Okres {okresData.NAZEVNUTS}</h1>
       <ul>
         {zastupitelstva.map(zastupitelstvo => (
           <li key={zastupitelstvo.KODZASTUP}>

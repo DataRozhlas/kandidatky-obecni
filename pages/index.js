@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import Head from "next/head";
 import Link from "../utils/Link";
 import Grid from "@mui/material/Grid";
@@ -16,12 +18,26 @@ export async function getStaticProps() {
 }
 
 export default function Home({ okresy }) {
+  const router = useRouter();
+  const bigCities = [
+    "praha/praha-hlm",
+    "brno-mesto/brno",
+    "ostrava-mesto/ostrava",
+    "plzen-mesto/plzen",
+  ];
+  const randomCity = bigCities[Math.floor(Math.random() * bigCities.length)];
+  useEffect(() => {
+    if (router.pathname === "/") {
+      router.push(randomCity);
+    }
+  }, [randomCity, router]);
+
   return (
     <>
       <Head>
         <title>Kdo kandiduje v komunálních volbách</title>
       </Head>
-      <Grid container spacing={2} mt={1} direction="column">
+      {/* <Grid container spacing={2} mt={1} direction="column">
         <Grid item>
           <NajdiObec />
         </Grid>
@@ -35,7 +51,7 @@ export default function Home({ okresy }) {
             ))}
           </ul>
         </Grid>
-      </Grid>
+      </Grid> */}
     </>
   );
 }
