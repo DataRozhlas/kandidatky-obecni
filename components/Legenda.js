@@ -1,8 +1,8 @@
-import { Typography, Container } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 const Legenda = ({ vybraneStrany }) => {
   return (
-    <Container
+    <Box
       disableGutters
       style={{
         display: "flex",
@@ -20,7 +20,7 @@ const Legenda = ({ vybraneStrany }) => {
           </Typography>
         );
       })}
-    </Container>
+    </Box>
   );
 };
 

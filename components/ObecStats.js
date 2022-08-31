@@ -43,11 +43,12 @@ const ObecStats = ({ rok, obecData, okresData, isMobile }) => {
         <CircularProgress />
       </Grid>
     );
-  if (kandidati.error)
-    return <Grid item>{"Stala se chyba: " + kandidati.error.message}</Grid>;
-
-  if (strany.error)
-    return <Grid item>{"Stala se chyba: " + strany.error.message}</Grid>;
+  if (kandidati.error || kandidati.error)
+    return (
+      <Grid item>
+        {"Stala se chyba: " + kandidati.error.message + strany.error.message}
+      </Grid>
+    );
 
   const vek =
     kandidati.data.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
@@ -66,7 +67,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile }) => {
     );
 
   return (
-    <>
+    <Grid item>
       <Grid item>
         <Typography variant="body">
           {countStrany(strany.data.length)} | {kandidati.data.length} kandidátů
@@ -74,8 +75,12 @@ const ObecStats = ({ rok, obecData, okresData, isMobile }) => {
           let | {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} % žen
         </Typography>
       </Grid>
+      {isMobile && (
+        <Grid item mt={3}>
+          <Legenda vybraneStrany={vybraneStrany} />
+        </Grid>
+      )}
       <Grid item>
-        {isMobile && <Legenda vybraneStrany={vybraneStrany} />}
         <Graf
           kandidati={kandidati.data}
           vybarveniKandidati={kandidati.data}
@@ -84,8 +89,12 @@ const ObecStats = ({ rok, obecData, okresData, isMobile }) => {
           setVybraneStrany={setVybraneStrany}
         ></Graf>
       </Grid>
-      {!isMobile && <Legenda vybraneStrany={vybraneStrany} />}
-      <Grid item>
+      {!isMobile && (
+        <Grid item mt={2}>
+          <Legenda vybraneStrany={vybraneStrany} />
+        </Grid>
+      )}
+      <Grid item mt={3}>
         <Tablica
           vybarveniKandidati={kandidati.data}
           isMobile={isMobile}
@@ -93,7 +102,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile }) => {
           //  ciselniky={ciselniky}
         />
       </Grid>
-    </>
+    </Grid>
   );
 };
 

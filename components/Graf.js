@@ -124,11 +124,7 @@ const Graf = ({
 
   // const kulicky = vyrobKulicky(kandidati, vybraneStrany);}, [vybraneStrany])
 
-  return (
-    <Container disableGutters>
-      <div ref={containerRef} className="chartWrapper"></div>
-    </Container>
-  );
+  return <div ref={containerRef} className="chartWrapper"></div>;
 };
 
 export default Graf;

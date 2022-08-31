@@ -3,16 +3,14 @@ import { Tooltip, Typography } from "@mui/material";
 
 const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
   const getFullName = params => {
-    const prvniTitul = params.getValue(params.id, "TITULPRED");
+    const prvniTitul = params.row.TITULPRED;
     return (
       <Tooltip
         arrow
         enterTouchDelay={0}
-        title={`${params.getValue(params.id, "TITULPRED") || ""} ${
-          params.getValue(params.id, "JMENO") || ""
-        } ${params.getValue(params.id, "PRIJMENI") || ""} ${
-          params.getValue(params.id, "TITULZA") || ""
-        }`}
+        title={`${params.row.TITULPRED || ""} ${params.row.JMENO || ""} ${
+          params.row.PRIJMENI || ""
+        } ${params.row.TITULZA || ""}`}
       >
         <Typography
           style={{
@@ -24,11 +22,9 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
           <span style={{ fontSize: "70%" }}>
             {typeof prvniTitul === "undefined" ? "" : prvniTitul + "\xa0"}
           </span>
-          {params.getValue(params.id, "JMENO") || ""}&nbsp;
-          <strong>{params.getValue(params.id, "PRIJMENI") || ""}</strong>&nbsp;
-          <span style={{ fontSize: "70%" }}>
-            {params.getValue(params.id, "TITULZA") || ""}
-          </span>
+          {params.row.JMENO || ""}&nbsp;
+          <strong>{params.row.PRIJMENI || ""}</strong>&nbsp;
+          <span style={{ fontSize: "70%" }}>{params.row.TITULZA || ""}</span>
         </Typography>
       </Tooltip>
     );
@@ -53,11 +49,7 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
 
   const ukazPovolani = params => {
     return (
-      <Tooltip
-        arrow
-        enterTouchDelay={0}
-        title={params.getValue(params.id, "POVOLANI")}
-      >
+      <Tooltip arrow enterTouchDelay={0} title={params.row.POVOLANI}>
         <span
           style={{
             overflow: "hidden",
@@ -65,7 +57,7 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
             cursor: "help",
           }}
         >
-          {params.getValue(params.id, "POVOLANI")}
+          {params.row.POVOLANI}
         </span>
       </Tooltip>
     );
@@ -74,10 +66,10 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
   const columns = [
     {
       field: "PORCISLO",
-      headerName: "Pořadí",
+      headerName: "#",
       description: "pořadí na kandidátce",
       flex: 1,
-      minWidth: 15,
+      minWidth: 40,
       disableColumnMenu: true,
       type: "number",
     },
@@ -117,7 +109,7 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
       headerName: "Věk",
       flex: 1,
       disableColumnMenu: true,
-      minWidth: 15,
+      minWidth: 50,
       type: "number",
     },
     {
@@ -130,27 +122,21 @@ const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
   ];
 
   return (
-    <div style={{ width: "100%", marginTop: isMobile ? null : "1.6rem" }}>
-      <div style={{ display: "flex", height: "100%" }}>
-        <div style={{ flexGrow: 1 }}>
-          <DataGrid
-            autoHeight
-            localeText={csCZ.components.MuiDataGrid.defaultProps.localeText}
-            density={"compact"}
-            rows={vybarveniKandidati.map(kandidat => {
-              return {
-                ...kandidat,
-                id: `${kandidat.KODZASTUP}-${kandidat.COBVODU}-${kandidat.POR_STR_HL}-${kandidat.PORCISLO}`,
-              };
-            })}
-            columns={columns}
-            rowsPerPageOptions={isMobile ? [10] : [20]}
-            pageSize={isMobile ? 10 : 20}
-            disableSelectionOnClick
-          />
-        </div>
-      </div>
-    </div>
+    <DataGrid
+      autoHeight
+      localeText={csCZ.components.MuiDataGrid.defaultProps.localeText}
+      density={"compact"}
+      rows={vybarveniKandidati.map(kandidat => {
+        return {
+          ...kandidat,
+          id: `${kandidat.KODZASTUP}-${kandidat.COBVODU}-${kandidat.POR_STR_HL}-${kandidat.PORCISLO}`,
+        };
+      })}
+      columns={columns}
+      rowsPerPageOptions={isMobile ? [10] : [20]}
+      pageSize={isMobile ? 10 : 20}
+      disableSelectionOnClick
+    />
   );
 };
 

@@ -41,7 +41,9 @@ const GrafGenerator = (container, kulicky, isMobile) => {
       .attr("class", "doubleChart")
       .append("svg")
       .attr("class", "graf")
-      .attr("viewBox", viewBox);
+      .attr("viewBox", viewBox)
+      .attr("height", "100%")
+      .attr("width", "100%");
 
     const node1 = svg1
       .append("g")
@@ -93,12 +95,15 @@ const GrafGenerator = (container, kulicky, isMobile) => {
       .force("x", forceX())
       .force("y", forceY())
       .force("charge", forceManyBody().strength(-3));
+
     const svg2 = select(container)
       .append("div")
       .attr("class", "doubleChart")
       .append("svg")
       .attr("class", "graf")
-      .attr("viewBox", viewBox);
+      .attr("viewBox", viewBox)
+      .attr("height", "100%")
+      .attr("width", "100%");
 
     const node2 = svg2
       .append("g")
@@ -133,7 +138,9 @@ const GrafGenerator = (container, kulicky, isMobile) => {
       .attr("class", "singleChart")
       .append("svg")
       .attr("class", "graf")
-      .attr("viewBox", viewBox);
+      .attr("viewBox", viewBox)
+      .attr("height", "100%")
+      .attr("width", "100%");
 
     const node = svg
       .append("g")

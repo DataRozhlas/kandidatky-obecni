@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { tsvParse } from "d3-dsv";
-import { Grid } from "@mui/material";
+import { Grid, Container } from "@mui/material";
 import Head from "next/head";
 
 import NajdiObec from "../../../components/NajdiObec";
-import ObecContainer from "../../../components/ObecContainer";
+import ObecInfo from "../../../components/ObecInfo";
+import RokSwitch from "../../../components/RokSwitch";
+import ObecStats from "../../../components/ObecStats";
 
 import okresy from "../../../public/okresy.json";
 
@@ -12,6 +14,8 @@ import styles from "../../../styles/Obec.module.css";
 
 export default function Obec({ obecData, okresData }) {
   const [rok, setRok] = useState("2022");
+
+  // zjisti šířku obrazovky
   const [isMobile, setIsMobile] = useState(
     typeof window === "undefined" ? true : window.innerWidth <= 600
   );
@@ -41,13 +45,26 @@ export default function Obec({ obecData, okresData }) {
           <NajdiObec />
         </Grid>
         <Grid item>
-          <ObecContainer
+          <Container>
+            <Grid container direction="column" spacing={2}>
+              <ObecInfo obecData={obecData} okresData={okresData} />
+              <RokSwitch rok={rok} setRok={setRok} />
+              <ObecStats
+                rok={rok}
+                obecData={obecData}
+                okresData={okresData}
+                isMobile={isMobile}
+              ></ObecStats>
+            </Grid>
+          </Container>
+
+          {/* <ObecContainer
             obecData={obecData}
             okresData={okresData}
             rok={rok}
             setRok={setRok}
             isMobile={isMobile}
-          />
+          /> */}
         </Grid>
       </Grid>
     </>
