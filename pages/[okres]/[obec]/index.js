@@ -41,34 +41,35 @@ export default function Obec({ obecData, okresData }) {
           {`${obecData.NAZEVZAST} – interaktivní kandidátky pro komunální volby`}
         </title>
       </Head>
-      <ResponsiveDrawer />
-      <Grid container spacing={3} mt={1} direction="column">
-        <Grid item>
-          <NajdiObec />
-        </Grid>
-        <Grid item>
-          <Container>
-            <Grid container direction="column" spacing={2}>
-              <ObecInfo obecData={obecData} okresData={okresData} />
-              <RokSwitch rok={rok} setRok={setRok} />
-              <ObecStats
-                rok={rok}
-                obecData={obecData}
-                okresData={okresData}
-                isMobile={isMobile}
-              ></ObecStats>
-            </Grid>
-          </Container>
+      <ResponsiveDrawer>
+        <Grid container spacing={3} mt={-4} direction="column">
+          <Grid item>
+            <NajdiObec />
+          </Grid>
+          <Grid item>
+            <Container sx={{ ml: 0 }}>
+              <Grid container direction="column" spacing={2}>
+                <ObecInfo obecData={obecData} okresData={okresData} />
+                <RokSwitch rok={rok} setRok={setRok} />
+                <ObecStats
+                  rok={rok}
+                  obecData={obecData}
+                  okresData={okresData}
+                  isMobile={isMobile}
+                ></ObecStats>
+              </Grid>
+            </Container>
 
-          {/* <ObecContainer
+            {/* <ObecContainer
             obecData={obecData}
             okresData={okresData}
             rok={rok}
             setRok={setRok}
             isMobile={isMobile}
           /> */}
+          </Grid>
         </Grid>
-      </Grid>
+      </ResponsiveDrawer>
     </>
   );
 }

@@ -35,8 +35,7 @@ export default function NajdiObec() {
   if (error) return "Stala se chyba: " + error.message;
 
   return (
-    <Container maxWidth="xs">
-      {" "}
+    <Container maxWidth="xs" sx={{ ml: 0 }}>
       <Autocomplete
         disablePortal
         autoHighlight
