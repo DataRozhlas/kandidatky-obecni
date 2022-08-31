@@ -13,7 +13,7 @@ const GrafGenerator = (container, kulicky, isMobile) => {
   const width = containerRect.width;
   //console.log(container, containerRect, height, width);
   //console.log(kulicky, isMobile, width);
-  const viewBox = [-160, -160, 320, 320];
+  const viewBox = [-200, -200, 400, 400];
 
   if (kulicky.length > 1) {
     // rozděl kuličky na obarvené podle strany a ostatní

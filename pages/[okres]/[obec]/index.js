@@ -7,6 +7,7 @@ import NajdiObec from "../../../components/NajdiObec";
 import ObecInfo from "../../../components/ObecInfo";
 import RokSwitch from "../../../components/RokSwitch";
 import ObecStats from "../../../components/ObecStats";
+import ResponsiveDrawer from "../../../components/ResponsiveDrawer";
 
 import okresy from "../../../public/okresy.json";
 
@@ -40,6 +41,7 @@ export default function Obec({ obecData, okresData }) {
           {`${obecData.NAZEVZAST} – interaktivní kandidátky pro komunální volby`}
         </title>
       </Head>
+      <ResponsiveDrawer />
       <Grid container spacing={3} mt={1} direction="column">
         <Grid item>
           <NajdiObec />
