@@ -44,7 +44,15 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
   const filterCandidates = (kandidati, filtr) => {
     const result = kandidati
       .filter(k => filtr.zeny === true || k.POHLAVI === "M")
-      .filter(k => filtr.muzi === true || k.POHLAVI === "F");
+      .filter(k => filtr.muzi === true || k.POHLAVI === "F")
+      .filter(
+        k =>
+          Number(k.PORCISLO) >= filtr.poradi[0] &&
+          Number(k.PORCISLO) <= filtr.poradi[1]
+      )
+      .filter(
+        k => Number(k.VEK) >= filtr.vek[0] && Number(k.VEK) <= filtr.vek[1]
+      );
     return result;
   };
 
@@ -69,13 +77,13 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
     );
 
   const vek =
-    kandidati.data.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
-    kandidati.data.length;
+    vybraniKandidati.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
+    vybraniKandidati.length;
   const zen =
-    kandidati.data.reduce((acc, curr) => {
+    vybraniKandidati.reduce((acc, curr) => {
       if (curr.POHLAVI === "F") return acc + 1;
       return acc;
-    }, 0) / kandidati.data.length;
+    }, 0) / vybraniKandidati.length;
 
   if (isNaN(vek))
     return (
@@ -88,9 +96,10 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
     <Grid item>
       <Grid item>
         <Typography variant="body">
-          {countStrany(strany.data.length)} | {kandidati.data.length} kandidátů
-          | průměrný věk {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")}{" "}
-          let | {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} % žen
+          {/* {countStrany(strany.data.length)} |  */}
+          {vybraniKandidati.length} kandidátů | průměrný věk{" "}
+          {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")} let |{" "}
+          {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} % žen
         </Typography>
       </Grid>
       {isMobile && (

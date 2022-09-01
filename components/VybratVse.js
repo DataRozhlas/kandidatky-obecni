@@ -18,9 +18,9 @@ const VybratVse = ({ items, filtr, setFiltr, classes }) => {
       <Button
         size="small"
         variant="text"
-        color="secondary"
+        color="primary"
         disableRipple={true}
-        className={classes.vybratVse}
+        className={styles.vybratVse}
         onClick={() => handleClick(variant, items, filtr, setFiltr)}
       >
         {variant}

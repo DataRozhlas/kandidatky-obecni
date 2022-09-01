@@ -1,10 +1,9 @@
 .bocniFieldset {
   width: 100%;
-  margin-top: 0.7rem;
-  margin-left: 0.3rem;
 }
 
 .bocniLabel {
+  color: rgba(0, 0, 0, 0.54);
   position: unset;
   transform: unset;
   font-size: 0.75rem;

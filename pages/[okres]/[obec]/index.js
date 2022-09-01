@@ -15,7 +15,12 @@ import styles from "../../../styles/Obec.module.css";
 
 export default function Obec({ obecData, okresData }) {
   const [rok, setRok] = useState("2022");
-  const [filtr, setFiltr] = useState({ muzi: true, zeny: true });
+  const [filtr, setFiltr] = useState({
+    muzi: true,
+    zeny: true,
+    poradi: [1, 70],
+    vek: [18, 102],
+  });
 
   // zjisti šířku obrazovky
   const [isMobile, setIsMobile] = useState(

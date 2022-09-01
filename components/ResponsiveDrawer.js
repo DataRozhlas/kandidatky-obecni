@@ -11,7 +11,7 @@ import Image from "next/image";
 import imgLoader from "../utils/imgLoader";
 import Filters from "./Filters";
 
-const drawerWidth = 200;
+const drawerWidth = 240;
 
 function ResponsiveDrawer({ window, filtr, setFiltr, okres, children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -34,7 +34,7 @@ function ResponsiveDrawer({ window, filtr, setFiltr, okres, children }) {
           opacity: { sm: 0.9 },
         }}
       >
-        <Toolbar sx={{ minHeight: { sm: "40px" } }}>
+        <Toolbar sx={{ minHeight: { sm: "40px" }, alignItems: "center" }}>
           {!okres && (
             <IconButton
               color="inherit"
