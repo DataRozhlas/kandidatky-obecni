@@ -11,13 +11,24 @@ let theme = createTheme({
   },
   palette: {
     primary: {
-      main: "#556cd6",
+      main: "#d83c46",
     },
     secondary: {
       main: "#19857b",
     },
     error: {
       main: red.A400,
+    },
+  },
+  components: {
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          "&.Mui-focused": {
+            color: "#0000008a",
+          },
+        },
+      },
     },
   },
 });

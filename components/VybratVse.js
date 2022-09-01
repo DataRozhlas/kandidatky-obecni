@@ -2,14 +2,18 @@ import { Button } from "@mui/material";
 
 import styles from "../styles/VybratVse.module.css";
 
-const VybratVse = ({ items, filtr, setFiltr, classes }) => {
-  const handleClick = (variant, items, filtr, setFiltr) => {
+const VybratVse = ({ items, filtr, setFiltr }) => {
+  const handleClick = (variant, items, setFiltr) => {
     if (variant === "zrušit vše") {
       const settings = items.reduce((o, key) => ({ ...o, [key]: false }), {});
-      setFiltr({ ...filtr, ...settings });
+      setFiltr(prevState => {
+        return { ...prevState, ...settings };
+      });
     } else {
       const settings = items.reduce((o, key) => ({ ...o, [key]: true }), {});
-      setFiltr({ ...filtr, ...settings });
+      setFiltr(prevState => {
+        return { ...prevState, ...settings };
+      });
     }
   };
 

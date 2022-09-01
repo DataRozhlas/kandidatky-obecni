@@ -85,7 +85,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
       return acc;
     }, 0) / vybraniKandidati.length;
 
-  if (isNaN(vek))
+  if (!kandidati.data)
     return (
       <Grid item>
         {"Data nejsou k dispozici. Zkuste jiný rok nebo jinou obec."}
