@@ -13,7 +13,6 @@ import styles from "../styles/Filters.module.css";
 
 const Filters = ({ filtr, setFiltr }) => {
   const handlePoradiChange = (e, newValue) => {
-    console.log(e);
     setFiltr({ ...filtr, poradi: newValue });
   };
 

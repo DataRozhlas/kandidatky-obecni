@@ -1,7 +1,6 @@
 import { useRef, useEffect } from "react";
 import { selectAll } from "d3-selection";
 import barvickyZdroj from "../public/barvicky.json";
-import { Container } from "@mui/material";
 
 import GrafGenerator from "../utils/GrafGenerator.js";
 

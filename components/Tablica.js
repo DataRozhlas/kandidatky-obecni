@@ -1,7 +1,7 @@
 import { DataGrid, csCZ } from "@mui/x-data-grid";
 import { Tooltip, Typography } from "@mui/material";
 
-const Tablica = ({ vybarveniKandidati, isMobile, strany }) => {
+const Tablica = ({ vybarveniKandidati, strany, isMobile }) => {
   const getFullName = params => {
     const prvniTitul = params.row.TITULPRED;
     return (

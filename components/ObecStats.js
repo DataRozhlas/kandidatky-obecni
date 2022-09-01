@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import { tsvParse } from "d3-dsv";
 
@@ -6,7 +6,7 @@ import Graf from "./Graf";
 import Tablica from "./Tablica";
 import Legenda from "./Legenda";
 
-import { Typography, Grid, CircularProgress } from "@mui/material";
+import { Typography, Grid, CircularProgress, Box } from "@mui/material";
 
 const fetchData = async context => {
   const urlDetail =
@@ -21,27 +21,12 @@ const fetchData = async context => {
   return data;
 };
 
-const countStrany = cislo => {
-  if (cislo === 1) return "1 strana";
-  if (cislo > 1 && cislo < 5) return `${cislo} strany`;
-  return `${cislo} stran`;
-};
+// filter candidates
 
-const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
-  const [vybraneStrany, setVybraneStrany] = useState([]);
-  const [vybraniKandidati, setVybraniKandidati] = useState([]);
-
-  // load external data
-  const kandidati = useQuery(
-    ["kandidati", rok, obecData, okresData],
-    fetchData,
-    { staleTime: Infinity }
-  );
-  const strany = useQuery(["strany", rok, obecData, okresData], fetchData);
-  const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
-
-  // filter candidates
-  const filterCandidates = (kandidati, filtr) => {
+const filterCandidates = async context => {
+  const filtr = context.queryKey[1];
+  const kandidati = context.queryKey[2];
+  if (kandidati) {
     const result = kandidati
       .filter(k => filtr.zeny === true || k.POHLAVI === "M")
       .filter(k => filtr.muzi === true || k.POHLAVI === "F")
@@ -54,36 +39,77 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
         k => Number(k.VEK) >= filtr.vek[0] && Number(k.VEK) <= filtr.vek[1]
       );
     return result;
-  };
+  }
+  return;
+};
 
-  useEffect(() => {
-    if (kandidati.isSuccess) {
-      const result = filterCandidates(kandidati.data, filtr);
-      setVybraniKandidati(result);
-    }
-  }, [filtr, kandidati.data, kandidati.isSuccess]);
+const countStrany = cislo => {
+  if (cislo === 1) return "1 strana";
+  if (cislo > 1 && cislo < 5) return `${cislo} strany`;
+  return `${cislo} stran`;
+};
 
-  if (kandidati.isLoading || strany.isLoading)
+const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
+  const [vybraneStrany, setVybraneStrany] = useState([]);
+  //const [vybraniKandidati, setVybraniKandidati] = useState([]);
+  // load external data
+  const kandidati = useQuery(
+    ["kandidati", rok, obecData, okresData],
+    fetchData
+  );
+  const vybraniKandidati = useQuery(
+    ["vybraniKanididati", filtr, kandidati.data],
+    filterCandidates
+  );
+  const strany = useQuery(["strany", rok, obecData, okresData], fetchData);
+  const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
+
+  // const filterCandidates = (kandidati, filtr) => {
+  //   const result = kandidati
+  //     .filter(k => filtr.zeny === true || k.POHLAVI === "M")
+  //     .filter(k => filtr.muzi === true || k.POHLAVI === "F")
+  //     .filter(
+  //       k =>
+  //         Number(k.PORCISLO) >= filtr.poradi[0] &&
+  //         Number(k.PORCISLO) <= filtr.poradi[1]
+  //     )
+  //     .filter(
+  //       k => Number(k.VEK) >= filtr.vek[0] && Number(k.VEK) <= filtr.vek[1]
+  //     );
+  //   return result;
+  // };
+
+  // useEffect(() => {
+  //   if (kandidati.isSuccess) {
+  //     const result = filterCandidates(kandidati.data, filtr);
+  //     setVybraniKandidati(result);
+  //   }
+  // }, [filtr, kandidati.data, kandidati.isSuccess]);
+
+  if (kandidati.isLoading || strany.isLoading || vybraniKandidati.isLoading)
     return (
       <Grid item>
         <CircularProgress />
       </Grid>
     );
-  if (kandidati.error || kandidati.error)
+  if (kandidati.error || strany.error || vybraniKandidati.error)
     return (
       <Grid item>
-        {"Stala se chyba: " + kandidati.error.message + strany.error.message}
+        {"Stala se chyba: " +
+          kandidati.error.message +
+          strany.error.message +
+          vybraniKandidati.error.messagex}
       </Grid>
     );
 
   const vek =
-    vybraniKandidati.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
-    vybraniKandidati.length;
+    vybraniKandidati.data.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
+    vybraniKandidati.data.length;
   const zen =
-    vybraniKandidati.reduce((acc, curr) => {
+    vybraniKandidati.data.reduce((acc, curr) => {
       if (curr.POHLAVI === "F") return acc + 1;
       return acc;
-    }, 0) / vybraniKandidati.length;
+    }, 0) / vybraniKandidati.data.length;
 
   if (!kandidati.data)
     return (
@@ -95,11 +121,43 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
   return (
     <Grid item>
       <Grid item>
-        <Typography variant="body">
-          {/* {countStrany(strany.data.length)} |  */}
-          {vybraniKandidati.length} kandidátů | průměrný věk{" "}
-          {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")} let |{" "}
-          {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} % žen
+        <Typography variant="body" sx={{ color: "#0000008a" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              wrap: "nowrap",
+            }}
+          >
+            {/* {countStrany(strany.data.length)} |  */}
+            <Box>
+              Vybráno{" "}
+              <span
+                style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
+              >
+                {vybraniKandidati.data.length}
+              </span>{" "}
+              kandidátů
+            </Box>
+            <Box>
+              průměrný věk{" "}
+              <span
+                style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
+              >
+                {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")}
+              </span>{" "}
+              let{" "}
+            </Box>
+            <Box>
+              <span
+                style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
+              >
+                {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} %{" "}
+              </span>
+              žen{" "}
+            </Box>
+          </Box>
         </Typography>
       </Grid>
       {isMobile && (
@@ -110,7 +168,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
       <Grid item>
         <Graf
           kandidati={kandidati.data}
-          vybarveniKandidati={vybraniKandidati}
+          vybarveniKandidati={vybraniKandidati.data}
           isMobile={isMobile}
           vybraneStrany={vybraneStrany}
           setVybraneStrany={setVybraneStrany}
@@ -123,9 +181,9 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
       )}
       <Grid item mt={3}>
         <Tablica
-          vybarveniKandidati={vybraniKandidati}
-          isMobile={isMobile}
+          vybarveniKandidati={vybraniKandidati.data}
           strany={strany.data}
+          isMobile={isMobile}
           //  ciselniky={ciselniky}
         />
       </Grid>
