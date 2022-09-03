@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { selectAll } from "d3-selection";
 import barvickyZdroj from "../public/barvicky.json";
 
-import GrafGenerator from "../utils/GrafGenerator.js";
+import GrafGenerator from "./../utils/GrafGenerator.js";
 
 const Graf = ({
   kandidati,

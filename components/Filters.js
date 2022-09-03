@@ -7,7 +7,7 @@ import {
   Slider,
 } from "@mui/material";
 
-//import Pohlavi from "./controls/Pohlavi";
+import Pohlavi from "./controls/Pohlavi";
 
 import styles from "../styles/Filters.module.css";
 
@@ -27,7 +27,7 @@ const Filters = ({ filtr, setFiltr }) => {
       </Box>
       <Toolbar>
         <FormControl component="fieldset" className={styles.bocniFieldset}>
-          {/* <Pohlavi filtr={filtr} setFiltr={setFiltr} /> */}
+          <Pohlavi filtr={filtr} setFiltr={setFiltr} />
           <FormControl className={styles.bocniFieldset}>
             <InputLabel className={styles.bocniLabel}>
               POŘADÍ NA KANDIDÁTCE

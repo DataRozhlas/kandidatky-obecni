@@ -2,16 +2,17 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  // images: {
-  //   loader: "custom",
-  // },
-  trailingSlash: true,
-  basePath: "/kandidatky-obecni",
   experimental: {
     images: {
       unoptimized: true,
     },
   },
+  //assetPrefix: "./",
+  // images: {
+  //   loader: "custom",
+  // },
+  trailingSlash: true,
+  basePath: "/kandidatky-obecni",
   // webpack: config => {
   //   // this will override the experiments
   //   config.experiments = { ...config.experiments, ...{ topLevelAwait: true } };

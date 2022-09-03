@@ -62,7 +62,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
     filterCandidates
   );
   const strany = useQuery(["strany", rok, obecData, okresData], fetchData);
-  const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
+  // const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
 
   // const filterCandidates = (kandidati, filtr) => {
   //   const result = kandidati
@@ -125,36 +125,58 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
               justifyContent: "space-between",
-              wrap: "nowrap",
+              alignItems: "flex-end",
+              flexWrap: "nowrap",
+              textAlign: "center",
             }}
           >
             {/* {countStrany(strany.data.length)} |  */}
-            <Box>
-              Vybráno{" "}
-              <span
-                style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Box>Vybráno</Box>
+              <Box
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "120%",
+                  color: "black",
+                }}
               >
                 {vybraniKandidati.data.length}
-              </span>{" "}
-              kandidátů
+              </Box>
+              <Box>kandidátů</Box>
             </Box>
-            <Box>
-              průměrný věk{" "}
-              <span
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              průměrný věk{"\u00A0"}
+              <Box
                 style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
               >
                 {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")}
-              </span>{" "}
+              </Box>
+              {"\u00A0"}
               let{" "}
             </Box>
-            <Box>
-              <span
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Box
                 style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
               >
-                {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")} %{" "}
-              </span>
+                {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")}
+                {"\u00A0"}%{" "}
+              </Box>
               žen{" "}
             </Box>
           </Box>

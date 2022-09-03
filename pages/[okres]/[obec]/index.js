@@ -54,7 +54,12 @@ export default function Obec({ obecData, okresData }) {
           </Grid>
           <Grid item>
             <Container sx={{ ml: 0 }}>
-              <Grid container direction="column" spacing={2}>
+              <Grid
+                container
+                direction="column"
+                spacing={2}
+                sx={{ maxWidth: "1000px" }}
+              >
                 <ObecInfo obecData={obecData} okresData={okresData} />
                 <RokSwitch rok={rok} setRok={setRok} />
                 <ObecStats

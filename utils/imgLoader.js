@@ -1,5 +1,5 @@
 const imgLoader = ({ src, width, quality }) => {
-  return `${src}`;
+  return `img/${width}/${src}`;
 };
 
 export default imgLoader;
