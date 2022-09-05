@@ -14,52 +14,52 @@ const Graf = ({
   const containerRef = useRef(null);
   const meritko = kandidati.length > 1849 ? 10 : 1;
 
-  // kolik stran, jež mají definovanou barvičku, je mezi vybranými kandidáty a které to jsou?
-  const zjistiVybraneStrany = (kandidati, barvickyZdroj) => {
-    const barvicky = barvickyZdroj.map(d => Object.assign({}, d)); //zkopíruj objekt s barvičkami
-    const strany = kandidati
-      .reduce((acc, curr) => {
-        const barvicka = acc.filter(b => b.vstrana === curr.NSTRANA)[0];
-        const index = acc.indexOf(barvicka);
-        if (index !== -1) {
-          const novaBarvicka = { ...barvicka, pocet: barvicka.pocet + 1 };
-          acc.splice(index, 1, novaBarvicka);
-        }
-        return acc;
-      }, barvicky)
-      .filter(s => {
-        return s.pocet > 0;
-      })
-      .map(s => {
-        const pocetKulicek = Math.floor(s.pocet / meritko);
-        return { ...s, pocet: pocetKulicek };
-      });
-    //console.log(strany);
-    const pocetVybarvenych = barvicky.reduce((acc, curr) => {
-      return acc + curr.pocet;
-    }, 0);
-    const result =
-      kandidati.length > pocetVybarvenych
-        ? [
-            ...strany,
-            {
-              nazev: "Ostatní",
-              barva: "#349DB2",
-              vstrana: 0,
-              pocet: Math.floor(
-                (kandidati.length - pocetVybarvenych) / meritko
-              ),
-            },
-          ]
-        : strany;
-    // console.log(result);
-    return result;
-  };
-
   useEffect(() => {
+    // kolik stran, jež mají definovanou barvičku, je mezi vybranými kandidáty a které to jsou?
+    const zjistiVybraneStrany = (kandidati, barvickyZdroj) => {
+      const barvicky = barvickyZdroj.map(d => Object.assign({}, d)); //zkopíruj objekt s barvičkami
+      const strany = kandidati
+        .reduce((acc, curr) => {
+          const barvicka = acc.filter(b => b.vstrana === curr.NSTRANA)[0];
+          const index = acc.indexOf(barvicka);
+          if (index !== -1) {
+            const novaBarvicka = { ...barvicka, pocet: barvicka.pocet + 1 };
+            acc.splice(index, 1, novaBarvicka);
+          }
+          return acc;
+        }, barvicky)
+        .filter(s => {
+          // jen strany, které se mezi kandidáty vyskytují
+          return s.pocet > 0;
+        })
+        .map(s => {
+          const pocetKulicek = Math.floor(s.pocet / meritko);
+          return { ...s, pocet: pocetKulicek };
+        });
+
+      const pocetVybarvenych = barvicky.reduce((acc, curr) => {
+        return acc + curr.pocet;
+      }, 0);
+      const result =
+        kandidati.length > pocetVybarvenych // kandidáty, pro které se nenašla starna, dej jako Ostatní
+          ? [
+              ...strany,
+              {
+                nazev: "Ostatní",
+                barva: "#349DB2",
+                vstrana: 0,
+                pocet: Math.floor(
+                  (kandidati.length - pocetVybarvenych) / meritko
+                ),
+              },
+            ]
+          : strany;
+      return result;
+    };
+
     const kulicky = zjistiVybraneStrany(kandidati, barvickyZdroj);
     setVybraneStrany(kulicky);
-  }, [kandidati]);
+  }, [kandidati, setVybraneStrany, meritko]);
 
   useEffect(() => {
     selectAll(".singleChart").remove();
@@ -79,7 +79,7 @@ const Graf = ({
     }
     //console.log(nodesFn());
     //  return [destroyFn, nodesFn];
-  }, [vybraneStrany]);
+  }, [vybraneStrany, isMobile]);
 
   useEffect(() => {
     //const zobrazeniKandidati = d3.selectAll(".kand")._groups;
@@ -119,7 +119,7 @@ const Graf = ({
     });
 
     //  console.log(vybarvenych);
-  }, [vybraneStrany, vybarveniKandidati]);
+  }, [vybraneStrany, vybarveniKandidati, meritko]);
 
   // const kulicky = vyrobKulicky(kandidati, vybraneStrany);}, [vybraneStrany])
 

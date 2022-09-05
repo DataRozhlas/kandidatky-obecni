@@ -21,12 +21,26 @@ const fetchData = async context => {
   return data;
 };
 
-// filter candidates
+const countStrany = cislo => {
+  if (cislo === 1) return "1 strana";
+  if (cislo > 1 && cislo < 5) return `${cislo} strany`;
+  return `${cislo} stran`;
+};
 
-const filterCandidates = async context => {
-  const filtr = context.queryKey[1];
-  const kandidati = context.queryKey[2];
-  if (kandidati) {
+const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
+  const [vybraneStrany, setVybraneStrany] = useState([]);
+  const [vybraniKandidati, setVybraniKandidati] = useState([]);
+
+  // load external data
+  const kandidati = useQuery(
+    ["kandidati", rok, obecData, okresData],
+    fetchData
+  );
+  const strany = useQuery(["strany", rok, obecData, okresData], fetchData);
+  // const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
+
+  const filterCandidates = (kandidati, filtr) => {
+    console.log("filtruju kandidáty");
     const result = kandidati
       .filter(k => filtr.zeny === true || k.POHLAVI === "M")
       .filter(k => filtr.muzi === true || k.POHLAVI === "F")
@@ -39,52 +53,23 @@ const filterCandidates = async context => {
         k => Number(k.VEK) >= filtr.vek[0] && Number(k.VEK) <= filtr.vek[1]
       );
     return result;
-  }
-  return;
-};
+  };
 
-const countStrany = cislo => {
-  if (cislo === 1) return "1 strana";
-  if (cislo > 1 && cislo < 5) return `${cislo} strany`;
-  return `${cislo} stran`;
-};
+  useEffect(() => {
+    if (kandidati.isSuccess) {
+      const result = filterCandidates(kandidati.data, filtr);
+      setVybraniKandidati(result);
+    }
+  }, [filtr, kandidati.data, kandidati.isSuccess]);
 
-const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
-  const [vybraneStrany, setVybraneStrany] = useState([]);
-  //const [vybraniKandidati, setVybraniKandidati] = useState([]);
-  // load external data
-  const kandidati = useQuery(
-    ["kandidati", rok, obecData, okresData],
-    fetchData
-  );
-  const vybraniKandidati = useQuery(
-    ["vybraniKanididati", filtr, kandidati.data],
-    filterCandidates
-  );
-  const strany = useQuery(["strany", rok, obecData, okresData], fetchData);
-  // const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
-
-  // const filterCandidates = (kandidati, filtr) => {
-  //   const result = kandidati
-  //     .filter(k => filtr.zeny === true || k.POHLAVI === "M")
-  //     .filter(k => filtr.muzi === true || k.POHLAVI === "F")
-  //     .filter(
-  //       k =>
-  //         Number(k.PORCISLO) >= filtr.poradi[0] &&
-  //         Number(k.PORCISLO) <= filtr.poradi[1]
-  //     )
-  //     .filter(
-  //       k => Number(k.VEK) >= filtr.vek[0] && Number(k.VEK) <= filtr.vek[1]
-  //     );
-  //   return result;
-  // };
-
-  // useEffect(() => {
-  //   if (kandidati.isSuccess) {
-  //     const result = filterCandidates(kandidati.data, filtr);
-  //     setVybraniKandidati(result);
-  //   }
-  // }, [filtr, kandidati.data, kandidati.isSuccess]);
+  const vek =
+    vybraniKandidati.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
+    vybraniKandidati.length;
+  const zen =
+    vybraniKandidati.reduce((acc, curr) => {
+      if (curr.POHLAVI === "F") return acc + 1;
+      return acc;
+    }, 0) / vybraniKandidati.length;
 
   if (kandidati.isLoading || strany.isLoading || vybraniKandidati.isLoading)
     return (
@@ -101,15 +86,6 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
           vybraniKandidati.error.messagex}
       </Grid>
     );
-
-  const vek =
-    vybraniKandidati.data.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
-    vybraniKandidati.data.length;
-  const zen =
-    vybraniKandidati.data.reduce((acc, curr) => {
-      if (curr.POHLAVI === "F") return acc + 1;
-      return acc;
-    }, 0) / vybraniKandidati.data.length;
 
   if (!kandidati.data)
     return (
@@ -146,7 +122,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
                   color: "black",
                 }}
               >
-                {vybraniKandidati.data.length}
+                {vybraniKandidati.length}
               </Box>
               <Box>kandidátů</Box>
             </Box>
@@ -190,7 +166,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
       <Grid item>
         <Graf
           kandidati={kandidati.data}
-          vybarveniKandidati={vybraniKandidati.data}
+          vybarveniKandidati={vybraniKandidati}
           isMobile={isMobile}
           vybraneStrany={vybraneStrany}
           setVybraneStrany={setVybraneStrany}
@@ -203,7 +179,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
       )}
       <Grid item mt={3}>
         <Tablica
-          vybarveniKandidati={vybraniKandidati.data}
+          vybarveniKandidati={vybraniKandidati}
           strany={strany.data}
           isMobile={isMobile}
           //  ciselniky={ciselniky}

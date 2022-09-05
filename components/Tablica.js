@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { DataGrid, csCZ } from "@mui/x-data-grid";
 import { Tooltip, Typography } from "@mui/material";
 
@@ -63,63 +64,65 @@ const Tablica = ({ vybarveniKandidati, strany, isMobile }) => {
     );
   };
 
-  const columns = [
-    {
-      field: "PORCISLO",
-      headerName: "#",
-      description: "pořadí na kandidátce",
-      flex: 1,
-      minWidth: 40,
-      disableColumnMenu: true,
-      type: "number",
-    },
-    {
-      field: "fullName",
-      headerName: "Celé jméno",
-      // valueGetter: getFullName,
-      // valueFormatter: getFullName,
-      renderCell: getFullName,
-      valueGetter: params => {
-        return params.row.JMENO + " " + params.row.PRIJMENI;
+  const columns = useMemo(() => {
+    return [
+      {
+        field: "PORCISLO",
+        headerName: "#",
+        description: "pořadí na kandidátce",
+        flex: 1,
+        minWidth: 40,
+        disableColumnMenu: true,
+        type: "number",
       },
-      sortComparator: (v1, v2, cellParams1, cellParams2) =>
-        cellParams1.api
-          .getCellValue(cellParams1.id, "PRIJMENI")
-          .localeCompare(
-            cellParams1.api.getCellValue(cellParams2.id, "PRIJMENI"),
-            "cs-CZ"
-          ),
-      flex: 3,
-      minWidth: 140,
-    },
-    {
-      field: "OSTRANA",
-      headerName: "Strana",
-      description: "volební strana",
-      renderCell: getOStrana,
-      valueGetter: params => {
-        const strana = strany.find(s => s.OSTRANA === params.row.OSTRANA);
-        return strana.NAZEVCELK + " " + strana.ZKRATKAO8;
+      {
+        field: "fullName",
+        headerName: "Celé jméno",
+        // valueGetter: getFullName,
+        // valueFormatter: getFullName,
+        renderCell: getFullName,
+        valueGetter: params => {
+          return params.row.JMENO + " " + params.row.PRIJMENI;
+        },
+        sortComparator: (v1, v2, cellParams1, cellParams2) =>
+          cellParams1.api
+            .getCellValue(cellParams1.id, "PRIJMENI")
+            .localeCompare(
+              cellParams1.api.getCellValue(cellParams2.id, "PRIJMENI"),
+              "cs-CZ"
+            ),
+        flex: 3,
+        minWidth: 140,
       },
-      minWidth: 100,
-      flex: 3,
-    },
-    {
-      field: "VEK",
-      headerName: "Věk",
-      flex: 1,
-      disableColumnMenu: true,
-      minWidth: 50,
-      type: "number",
-    },
-    {
-      field: "POVOLANI",
-      headerName: "Povolání",
-      flex: 6,
-      renderCell: ukazPovolani,
-      minWidth: 120,
-    },
-  ];
+      {
+        field: "OSTRANA",
+        headerName: "Strana",
+        description: "volební strana",
+        renderCell: getOStrana,
+        valueGetter: params => {
+          const strana = strany.find(s => s.OSTRANA === params.row.OSTRANA);
+          return strana.NAZEVCELK + " " + strana.ZKRATKAO8;
+        },
+        minWidth: 100,
+        flex: 3,
+      },
+      {
+        field: "VEK",
+        headerName: "Věk",
+        flex: 1,
+        disableColumnMenu: true,
+        minWidth: 50,
+        type: "number",
+      },
+      {
+        field: "POVOLANI",
+        headerName: "Povolání",
+        flex: 6,
+        renderCell: ukazPovolani,
+        minWidth: 120,
+      },
+    ];
+  }, [vybarveniKandidati]);
 
   return (
     <DataGrid

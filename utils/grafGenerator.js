@@ -19,6 +19,8 @@ const GrafGenerator = (container, kulicky, isMobile) => {
     // rozděl kuličky na obarvené podle strany a ostatní
     const kulickyUrcene = kulicky.filter(k => k.vstrana !== 0);
     const kulickyOstatni = kulicky.filter(k => k.vstrana === 0);
+    console.log(kulickyUrcene);
+    console.log(kulickyOstatni);
 
     const nodes = kulickyUrcene.map(d => Object.assign({}, d));
     const nodesOstatni = kulickyOstatni.map(d => Object.assign({}, d));
