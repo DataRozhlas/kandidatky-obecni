@@ -11,7 +11,7 @@ import Image from "next/image";
 import imgLoader from "../utils/imgLoader";
 import Filters from "./Filters";
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 function ResponsiveDrawer({
   window,
@@ -20,6 +20,8 @@ function ResponsiveDrawer({
   okres,
   children,
   isMobile,
+  maxAge,
+  maxRank,
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -89,7 +91,12 @@ function ResponsiveDrawer({
             },
           }}
         >
-          <Filters filtr={filtr} setFiltr={setFiltr} />
+          <Filters
+            filtr={filtr}
+            setFiltr={setFiltr}
+            maxAge={maxAge}
+            maxRank={maxRank}
+          />
         </Drawer>
         {!okres && (
           <Drawer
@@ -103,7 +110,12 @@ function ResponsiveDrawer({
             }}
             open
           >
-            <Filters filtr={filtr} setFiltr={setFiltr} />
+            <Filters
+              filtr={filtr}
+              setFiltr={setFiltr}
+              maxAge={maxAge}
+              maxRank={maxRank}
+            />
           </Drawer>
         )}
       </Box>

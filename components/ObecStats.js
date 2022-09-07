@@ -8,6 +8,7 @@ import Tablica from "./Tablica";
 import Legenda from "./Legenda";
 
 import { Grid, CircularProgress } from "@mui/material";
+import { CoPresentOutlined } from "@mui/icons-material";
 
 const fetchData = async context => {
   const urlDetail =
@@ -22,7 +23,16 @@ const fetchData = async context => {
   return data;
 };
 
-const ObecStats = ({ rok, obecData, okresData, isMobile, filtr, view }) => {
+const ObecStats = ({
+  rok,
+  obecData,
+  okresData,
+  isMobile,
+  filtr,
+  view,
+  setMaxAge,
+  setMaxRank,
+}) => {
   const [vybraneStrany, setVybraneStrany] = useState([]);
   const [vybraniKandidati, setVybraniKandidati] = useState([]);
 
@@ -56,6 +66,19 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr, view }) => {
       setVybraniKandidati(result);
     }
   }, [filtr, kandidati.data, kandidati.isSuccess]);
+
+  useEffect(() => {
+    if (kandidati.isSuccess) {
+      const ages = kandidati.data.map(k => {
+        return Number(k.VEK);
+      });
+      setMaxAge([Math.min(...ages), Math.max(...ages)]);
+      const ranks = kandidati.data.map(k => {
+        return Number(k.PORCISLO);
+      });
+      setMaxRank([Math.min(...ranks), Math.max(...ranks)]);
+    }
+  }, [kandidati.data, kandidati.isSuccess, setMaxAge]);
 
   if (kandidati.isLoading || strany.isLoading || vybraniKandidati.isLoading)
     return (

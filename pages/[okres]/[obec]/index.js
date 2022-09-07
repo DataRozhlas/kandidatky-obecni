@@ -23,6 +23,8 @@ export default function Obec({ obecData, okresData }) {
     vek: [18, 102],
   });
   const [view, setView] = useState("NSTRANA");
+  const [maxAge, setMaxAge] = useState([18, 102]);
+  const [maxRank, setMaxRank] = useState([1, 70]);
 
   // zjisti šířku obrazovky
   const [isMobile, setIsMobile] = useState(
@@ -54,6 +56,8 @@ export default function Obec({ obecData, okresData }) {
         filtr={filtr}
         setFiltr={setFiltr}
         isMobile={isMobile}
+        maxAge={maxAge}
+        maxRank={maxRank}
       >
         <Grid container spacing={3} mt={-4} direction="column">
           <Grid item>
@@ -87,6 +91,8 @@ export default function Obec({ obecData, okresData }) {
                   isMobile={isMobile}
                   filtr={filtr}
                   view={view}
+                  setMaxAge={setMaxAge}
+                  setMaxRank={setMaxRank}
                 ></ObecStats>
               </Grid>
             </Container>

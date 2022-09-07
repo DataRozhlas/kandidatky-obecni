@@ -11,7 +11,7 @@ import Pohlavi from "./controls/Pohlavi";
 
 import styles from "../styles/Filters.module.css";
 
-const Filters = ({ filtr, setFiltr }) => {
+const Filters = ({ filtr, setFiltr, maxAge, maxRank }) => {
   const handlePoradiChange = (e, newValue) => {
     setFiltr({ ...filtr, poradi: newValue });
   };
@@ -34,12 +34,12 @@ const Filters = ({ filtr, setFiltr }) => {
             </InputLabel>
             <Slider
               size="small"
-              sx={{ marginLeft: "0.3rem" }}
+              sx={{ marginLeft: "0.3rem", marginTop: "1.8rem" }}
               value={filtr.poradi}
               onChange={handlePoradiChange}
-              min={1}
-              max={70}
-              valueLabelDisplay="auto"
+              min={maxRank[0]}
+              max={maxRank[1]}
+              valueLabelDisplay="on"
             ></Slider>
           </FormControl>
           <FormControl className={styles.bocniFieldset}>
@@ -47,12 +47,12 @@ const Filters = ({ filtr, setFiltr }) => {
             <Slider
               id="vek"
               size="small"
-              sx={{ marginLeft: "0.3rem" }}
+              sx={{ marginLeft: "0.3rem", marginTop: "1.8rem" }}
               value={filtr.vek}
               onChange={handleVekChange}
-              min={18}
-              max={102}
-              valueLabelDisplay="auto"
+              min={maxAge[0]}
+              max={maxAge[1]}
+              valueLabelDisplay="on"
             ></Slider>
           </FormControl>
         </FormControl>
