@@ -6,7 +6,7 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-const Prehled = ({ vybraniKandidati }) => {
+const Prehled = ({ vybraniKandidati, isMobile }) => {
   const vek =
     vybraniKandidati.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
     vybraniKandidati.length;
@@ -28,6 +28,7 @@ const Prehled = ({ vybraniKandidati }) => {
             alignItems: "flex-end",
             flexWrap: "nowrap",
             textAlign: "center",
+            gap: "0.5rem",
           }}
         >
           {/* {countStrany(strany.data.length)} |  */}
@@ -55,13 +56,14 @@ const Prehled = ({ vybraniKandidati }) => {
               flexDirection: "column",
             }}
           >
-            průměrný věk{"\u00A0"}
+            {isMobile ? "ø věk" : "průměrný věk"}
             <Box
               style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
             >
-              {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")}
+              {vybraniKandidati.length > 0
+                ? (Math.round(vek * 10) / 10).toLocaleString("cs-CZ")
+                : "--"}
             </Box>
-            {"\u00A0"}
             let{" "}
           </Box>
           <Box
@@ -73,7 +75,9 @@ const Prehled = ({ vybraniKandidati }) => {
             <Box
               style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
             >
-              {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")}
+              {vybraniKandidati.length > 0
+                ? (Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")
+                : "--"}
               {"\u00A0"}%{" "}
             </Box>
             žen{" "}

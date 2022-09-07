@@ -22,12 +22,6 @@ const fetchData = async context => {
   return data;
 };
 
-const countStrany = cislo => {
-  if (cislo === 1) return "1 strana";
-  if (cislo > 1 && cislo < 5) return `${cislo} strany`;
-  return `${cislo} stran`;
-};
-
 const ObecStats = ({ rok, obecData, okresData, isMobile, filtr, view }) => {
   const [vybraneStrany, setVybraneStrany] = useState([]);
   const [vybraniKandidati, setVybraniKandidati] = useState([]);
@@ -88,7 +82,10 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr, view }) => {
 
   return (
     <Grid item>
-      <Prehled vybraniKandidati={vybraniKandidati}></Prehled>
+      <Prehled
+        vybraniKandidati={vybraniKandidati}
+        isMobile={isMobile}
+      ></Prehled>
       {isMobile && (
         <Grid item mt={3}>
           <Legenda vybraneStrany={vybraneStrany} />
