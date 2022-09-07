@@ -13,7 +13,14 @@ import Filters from "./Filters";
 
 const drawerWidth = 240;
 
-function ResponsiveDrawer({ window, filtr, setFiltr, okres, children }) {
+function ResponsiveDrawer({
+  window,
+  filtr,
+  setFiltr,
+  okres,
+  children,
+  isMobile,
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -105,6 +112,7 @@ function ResponsiveDrawer({ window, filtr, setFiltr, okres, children }) {
         sx={{
           flexGrow: 1,
           p: 3,
+          px: isMobile ? 0 : 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >

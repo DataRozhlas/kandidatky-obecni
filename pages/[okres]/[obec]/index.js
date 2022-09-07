@@ -47,7 +47,12 @@ export default function Obec({ obecData, okresData }) {
           {`${obecData.NAZEVZAST} – interaktivní kandidátky pro komunální volby`}
         </title>
       </Head>
-      <ResponsiveDrawer okres={false} filtr={filtr} setFiltr={setFiltr}>
+      <ResponsiveDrawer
+        okres={false}
+        filtr={filtr}
+        setFiltr={setFiltr}
+        isMobile={isMobile}
+      >
         <Grid container spacing={3} mt={-4} direction="column">
           <Grid item>
             <NajdiObec />
