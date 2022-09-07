@@ -10,6 +10,7 @@ const Graf = ({
   isMobile,
   vybraneStrany,
   setVybraneStrany,
+  view,
 }) => {
   const containerRef = useRef(null);
   const meritko = 1; //kandidati.length > 1849 ? 10 : 1;
@@ -20,7 +21,7 @@ const Graf = ({
       const barvicky = barvickyZdroj.map(d => Object.assign({}, d)); //zkopíruj objekt s barvičkami
       const strany = kandidati
         .reduce((acc, curr) => {
-          const barvicka = acc.filter(b => b.vstrana === curr.NSTRANA)[0];
+          const barvicka = acc.filter(b => b.vstrana === curr[view])[0];
           const index = acc.indexOf(barvicka);
           if (index !== -1) {
             const novaBarvicka = { ...barvicka, pocet: barvicka.pocet + 1 };
@@ -58,7 +59,7 @@ const Graf = ({
 
     const kulicky = zjistiVybraneStrany(kandidati, barvickyZdroj);
     setVybraneStrany(kulicky);
-  }, [kandidati, setVybraneStrany, meritko]);
+  }, [kandidati, setVybraneStrany, meritko, view]);
 
   useEffect(() => {
     selectAll(".singleChart").remove();
@@ -86,7 +87,7 @@ const Graf = ({
     // console.log(vybraneStrany);
     const vybarvenych = vybraneStrany.map(s => {
       if (s.vstrana !== 0) {
-        return vybarveniKandidati.filter(k => k.NSTRANA === s.vstrana).length;
+        return vybarveniKandidati.filter(k => k[view] === s.vstrana).length;
       } else return 0;
     });
     // console.log(vybarvenych);
@@ -120,7 +121,7 @@ const Graf = ({
     });
 
     //  console.log(vybarvenych);
-  }, [vybraneStrany, vybarveniKandidati, meritko]);
+  }, [vybraneStrany, vybarveniKandidati, meritko, view]);
 
   // const kulicky = vyrobKulicky(kandidati, vybraneStrany);}, [vybraneStrany])
 

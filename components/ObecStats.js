@@ -28,7 +28,7 @@ const countStrany = cislo => {
   return `${cislo} stran`;
 };
 
-const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
+const ObecStats = ({ rok, obecData, okresData, isMobile, filtr, view }) => {
   const [vybraneStrany, setVybraneStrany] = useState([]);
   const [vybraniKandidati, setVybraniKandidati] = useState([]);
 
@@ -101,6 +101,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
           isMobile={isMobile}
           vybraneStrany={vybraneStrany}
           setVybraneStrany={setVybraneStrany}
+          view={view}
         ></Graf>
       </Grid>
       {!isMobile && (

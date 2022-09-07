@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { tsvParse } from "d3-dsv";
-import { Grid, Container } from "@mui/material";
+import { Grid, Container, Box } from "@mui/material";
 import Head from "next/head";
 
 import NajdiObec from "../../../components/NajdiObec";
 import ObecInfo from "../../../components/ObecInfo";
 import RokSwitch from "../../../components/RokSwitch";
+import ViewSwitch from "../../../components/ViewSwitch";
 import ObecStats from "../../../components/ObecStats";
 import ResponsiveDrawer from "../../../components/ResponsiveDrawer";
 
@@ -21,6 +22,7 @@ export default function Obec({ obecData, okresData }) {
     poradi: [1, 70],
     vek: [18, 102],
   });
+  const [view, setView] = useState("NSTRANA");
 
   // zjisti šířku obrazovky
   const [isMobile, setIsMobile] = useState(
@@ -66,13 +68,25 @@ export default function Obec({ obecData, okresData }) {
                 sx={{ maxWidth: "1000px" }}
               >
                 <ObecInfo obecData={obecData} okresData={okresData} />
-                <RokSwitch rok={rok} setRok={setRok} />
+                <Grid
+                  item
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "1rem",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <RokSwitch rok={rok} setRok={setRok} />
+                  <ViewSwitch view={view} setView={setView} />
+                </Grid>{" "}
                 <ObecStats
                   rok={rok}
                   obecData={obecData}
                   okresData={okresData}
                   isMobile={isMobile}
                   filtr={filtr}
+                  view={view}
                 ></ObecStats>
               </Grid>
             </Container>
