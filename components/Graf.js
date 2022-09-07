@@ -12,7 +12,7 @@ const Graf = ({
   setVybraneStrany,
 }) => {
   const containerRef = useRef(null);
-  const meritko = kandidati.length > 1849 ? 10 : 1;
+  const meritko = 1; //kandidati.length > 1849 ? 10 : 1;
 
   useEffect(() => {
     // kolik stran, jež mají definovanou barvičku, je mezi vybranými kandidáty a které to jsou?
@@ -36,7 +36,6 @@ const Graf = ({
           const pocetKulicek = Math.floor(s.pocet / meritko);
           return { ...s, pocet: pocetKulicek };
         });
-
       const pocetVybarvenych = barvicky.reduce((acc, curr) => {
         return acc + curr.pocet;
       }, 0);
@@ -54,6 +53,7 @@ const Graf = ({
               },
             ]
           : strany;
+      console.log(result);
       return result;
     };
 

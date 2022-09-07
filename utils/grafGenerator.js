@@ -1,4 +1,4 @@
-import { select, selectAll } from "d3-selection";
+import { select } from "d3-selection";
 import {
   forceSimulation,
   forceManyBody,
@@ -6,21 +6,17 @@ import {
   forceX,
   forceY,
 } from "d3-force";
+import Tooltip from "@mui/material/Tooltip";
 
 const GrafGenerator = (container, kulicky, isMobile) => {
-  const containerRect = container.getBoundingClientRect();
-  const height = containerRect.height;
-  const width = containerRect.width;
-  //console.log(container, containerRect, height, width);
-  //console.log(kulicky, isMobile, width);
   const viewBox = [-200, -200, 400, 400];
 
-  if (kulicky.length > 1) {
+  if (kulicky.length > 1 && kulicky.find(k => k.vstrana === 0)) {
     // rozděl kuličky na obarvené podle strany a ostatní
     const kulickyUrcene = kulicky.filter(k => k.vstrana !== 0);
     const kulickyOstatni = kulicky.filter(k => k.vstrana === 0);
-    console.log(kulickyUrcene);
-    console.log(kulickyOstatni);
+    //console.log(kulickyUrcene);
+    //console.log(kulickyOstatni);
 
     const nodes = kulickyUrcene.map(d => Object.assign({}, d));
     const nodesOstatni = kulickyOstatni.map(d => Object.assign({}, d));

@@ -2,11 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import { tsvParse } from "d3-dsv";
 
+import Prehled from "./Prehled";
 import Graf from "./Graf";
 import Tablica from "./Tablica";
 import Legenda from "./Legenda";
 
-import { Typography, Grid, CircularProgress, Box } from "@mui/material";
+import { Grid, CircularProgress } from "@mui/material";
 
 const fetchData = async context => {
   const urlDetail =
@@ -62,15 +63,6 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
     }
   }, [filtr, kandidati.data, kandidati.isSuccess]);
 
-  const vek =
-    vybraniKandidati.reduce((acc, curr) => acc + Number(curr.VEK), 0) /
-    vybraniKandidati.length;
-  const zen =
-    vybraniKandidati.reduce((acc, curr) => {
-      if (curr.POHLAVI === "F") return acc + 1;
-      return acc;
-    }, 0) / vybraniKandidati.length;
-
   if (kandidati.isLoading || strany.isLoading || vybraniKandidati.isLoading)
     return (
       <Grid item>
@@ -96,68 +88,7 @@ const ObecStats = ({ rok, obecData, okresData, isMobile, filtr }) => {
 
   return (
     <Grid item>
-      <Grid item>
-        <Typography variant="body" sx={{ color: "#0000008a" }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              flexWrap: "nowrap",
-              textAlign: "center",
-            }}
-          >
-            {/* {countStrany(strany.data.length)} |  */}
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Box>Vybráno</Box>
-              <Box
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "120%",
-                  color: "black",
-                }}
-              >
-                {vybraniKandidati.length}
-              </Box>
-              <Box>kandidátů</Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              průměrný věk{"\u00A0"}
-              <Box
-                style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
-              >
-                {(Math.round(vek * 10) / 10).toLocaleString("cs-CZ")}
-              </Box>
-              {"\u00A0"}
-              let{" "}
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Box
-                style={{ fontWeight: "bold", fontSize: "120%", color: "black" }}
-              >
-                {(Math.round(zen * 1000) / 10).toLocaleString("cs-CZ")}
-                {"\u00A0"}%{" "}
-              </Box>
-              žen{" "}
-            </Box>
-          </Box>
-        </Typography>
-      </Grid>
+      <Prehled vybraniKandidati={vybraniKandidati}></Prehled>
       {isMobile && (
         <Grid item mt={3}>
           <Legenda vybraneStrany={vybraneStrany} />
