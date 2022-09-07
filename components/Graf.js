@@ -53,7 +53,6 @@ const Graf = ({
               },
             ]
           : strany;
-      console.log(result);
       return result;
     };
 
@@ -85,13 +84,13 @@ const Graf = ({
     //const zobrazeniKandidati = d3.selectAll(".kand")._groups;
 
     // pro každou stranu zjisti, kolik z vybraných nemá být vybarveno
-    //console.log(vybraneStrany);
+    // console.log(vybraneStrany);
     const vybarvenych = vybraneStrany.map(s => {
       if (s.vstrana !== 0) {
         return vybarveniKandidati.filter(k => k.NSTRANA === s.vstrana).length;
       } else return 0;
     });
-
+    // console.log(vybarvenych);
     //ostatni
     if (vybarvenych.length > 1 || vybarvenych[0] === 0) {
       vybarvenych[vybarvenych.length - 1] =

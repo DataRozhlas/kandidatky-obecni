@@ -6,7 +6,6 @@ import {
   forceX,
   forceY,
 } from "d3-force";
-import Tooltip from "@mui/material/Tooltip";
 
 const GrafGenerator = (container, kulicky, isMobile) => {
   const viewBox = [-200, -200, 400, 400];
@@ -116,6 +115,7 @@ const GrafGenerator = (container, kulicky, isMobile) => {
       node2.attr("cx", d => d.x).attr("cy", d => d.y);
     });
   } else if (kulicky.length === 1) {
+    // KDYŽ je jenom jeden graf a jsou to ostaní
     const nodes = Array.from({ length: kulicky[0].pocet }, (v, i) => {
       const obj = {
         id: i,
@@ -124,8 +124,6 @@ const GrafGenerator = (container, kulicky, isMobile) => {
       };
       return obj;
     });
-
-    // KDYŽ je jenom jeden graf
 
     const simulation = forceSimulation(nodes)
       .force("x", forceX())
@@ -151,6 +149,70 @@ const GrafGenerator = (container, kulicky, isMobile) => {
 
     simulation.on("tick", () => {
       node.attr("cx", d => d.x).attr("cy", d => d.y);
+    });
+  } else {
+    // když je jenom jeden graf a jsou to partaje
+    const nodes = kulicky;
+
+    const simulation = forceSimulation(nodes)
+      .force("x", forceX())
+      .force("y", forceY())
+      .force(
+        "collision",
+        forceCollide().radius(
+          d =>
+            Math.sqrt(d.pocet * 100) -
+            (d.pocet < 150 ? d.pocet / 2 : d.pocet / 6)
+        )
+      )
+      .force("charge", forceManyBody().strength(2)) //.distanceMax(200)) //-200 100
+      .stop();
+    const svg = select(container)
+      .append("div")
+      .attr("class", "singleChart")
+      .append("svg")
+      .attr("class", "graf")
+      .attr("viewBox", viewBox)
+      .attr("height", "100%")
+      .attr("width", "100%");
+
+    const node = svg
+      .append("g")
+      .selectAll("circle")
+      .data(nodes)
+      .join("circle")
+      .attr("r", d => ((d.pocet / 2) * Math.PI) / 5)
+      .attr("fill", "none");
+
+    simulation.tick(300);
+
+    // update node positions
+    node.attr("cx", d => d.x).attr("cy", d => d.y);
+
+    nodes.forEach(n => {
+      //console.log(n);
+      const subnodes = Array.from({ length: n.pocet }, (v, i) => {
+        const obj = { id: i, barva: n.barva };
+        return obj;
+      });
+
+      const subsimulation = forceSimulation(subnodes)
+        .force("x", forceX(n.x))
+        .force("y", forceY(n.y))
+        .force("charge", forceManyBody().strength(-3));
+
+      const subnode = svg
+        .append("g")
+        .selectAll("circle")
+        .data(subnodes)
+        .join("circle")
+        .attr("r", 4)
+        .attr("class", `kand ${n.vstrana}`)
+        .attr("fill", d => d.barva);
+
+      subsimulation.on("tick", () => {
+        subnode.attr("cx", d => d.x).attr("cy", d => d.y);
+      });
     });
   }
   return {
