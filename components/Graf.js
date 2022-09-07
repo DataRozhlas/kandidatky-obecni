@@ -82,7 +82,6 @@ const Graf = ({
 
   useEffect(() => {
     //const zobrazeniKandidati = d3.selectAll(".kand")._groups;
-
     // pro každou stranu zjisti, kolik z vybraných nemá být vybarveno
     // console.log(vybraneStrany);
     const vybarvenych = vybraneStrany.map(s => {
@@ -92,7 +91,10 @@ const Graf = ({
     });
     // console.log(vybarvenych);
     //ostatni
-    if (vybarvenych.length > 1 || vybarvenych[0] === 0) {
+    if (
+      (vybarvenych.length > 1 && vybarvenych[vybarvenych.length - 1] === 0) ||
+      vybarvenych[0] === 0
+    ) {
       vybarvenych[vybarvenych.length - 1] =
         vybarveniKandidati.length -
         vybarvenych.reduce((acc, curr) => acc + curr, 0);
