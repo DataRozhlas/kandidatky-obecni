@@ -8,10 +8,11 @@ import {
 } from "@mui/material";
 
 import Pohlavi from "./controls/Pohlavi";
+import Strany from "./controls/Strany";
 
 import styles from "../styles/Filters.module.css";
 
-const Filters = ({ filtr, setFiltr, maxAge, maxRank }) => {
+const Filters = ({ filtr, setFiltr, maxAge, maxRank, strany }) => {
   const handlePoradiChange = (e, newValue) => {
     setFiltr({ ...filtr, poradi: newValue });
   };
@@ -55,6 +56,7 @@ const Filters = ({ filtr, setFiltr, maxAge, maxRank }) => {
               valueLabelDisplay="on"
             ></Slider>
           </FormControl>
+          <Strany filtr={filtr} setFiltr={setFiltr} strany={strany} />
         </FormControl>
       </Toolbar>
     </Box>

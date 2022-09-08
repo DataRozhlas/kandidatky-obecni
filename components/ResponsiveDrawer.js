@@ -22,6 +22,7 @@ function ResponsiveDrawer({
   isMobile,
   maxAge,
   maxRank,
+  strany,
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -96,6 +97,7 @@ function ResponsiveDrawer({
             setFiltr={setFiltr}
             maxAge={maxAge}
             maxRank={maxRank}
+            strany={strany}
           />
         </Drawer>
         {!okres && (
@@ -115,6 +117,7 @@ function ResponsiveDrawer({
               setFiltr={setFiltr}
               maxAge={maxAge}
               maxRank={maxRank}
+              strany={strany}
             />
           </Drawer>
         )}

@@ -30,6 +30,14 @@ let theme = createTheme({
         },
       },
     },
+    MuiSlider: {
+      styleOverrides: {
+        valueLabel: {
+          color: "black",
+          backgroundColor: "#fceff0",
+        },
+      },
+    },
   },
 });
 

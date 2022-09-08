@@ -3,16 +3,14 @@ import { Button } from "@mui/material";
 import styles from "../styles/VybratVse.module.css";
 
 const VybratVse = ({ items, filtr, setFiltr }) => {
-  const handleClick = (variant, items, setFiltr) => {
+  const handleClick = (variant, items) => {
     if (variant === "zrušit vše") {
-      const settings = items.reduce((o, key) => ({ ...o, [key]: false }), {});
       setFiltr(prevState => {
-        return { ...prevState, ...settings };
+        return { ...prevState, strany: [] };
       });
     } else {
-      const settings = items.reduce((o, key) => ({ ...o, [key]: true }), {});
       setFiltr(prevState => {
-        return { ...prevState, ...settings };
+        return { ...prevState, strany: items };
       });
     }
   };
@@ -25,15 +23,14 @@ const VybratVse = ({ items, filtr, setFiltr }) => {
         color="primary"
         disableRipple={true}
         className={styles.vybratVse}
-        onClick={() => handleClick(variant, items, filtr, setFiltr)}
+        onClick={() => handleClick(variant, items)}
       >
         {variant}
       </Button>
     );
   };
 
-  const itemValues = items.map(i => filtr[i]);
-
+  const itemValues = items.map(i => filtr.strany.includes(i));
   return (
     <div>
       {!itemValues.some(Boolean)

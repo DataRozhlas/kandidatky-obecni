@@ -16,15 +16,28 @@ import styles from "../../../styles/Obec.module.css";
 
 export default function Obec({ obecData, okresData }) {
   const [rok, setRok] = useState("2022");
+  const [obecStrany, setObecStrany] = useState([]);
   const [filtr, setFiltr] = useState({
     muzi: true,
     zeny: true,
     poradi: [1, 70],
     vek: [18, 102],
+    strany: [],
   });
   const [view, setView] = useState("NSTRANA");
   const [maxAge, setMaxAge] = useState([18, 102]);
   const [maxRank, setMaxRank] = useState([1, 70]);
+
+  // když se načtou nové strany, tak je všechny vyber do filtru
+
+  useEffect(() => {
+    setFiltr(prevFiltr => {
+      return {
+        ...prevFiltr,
+        strany: obecStrany.map(strana => strana.POR_STR_HL),
+      };
+    });
+  }, [obecStrany]);
 
   // zjisti šířku obrazovky
   const [isMobile, setIsMobile] = useState(
@@ -58,6 +71,7 @@ export default function Obec({ obecData, okresData }) {
         isMobile={isMobile}
         maxAge={maxAge}
         maxRank={maxRank}
+        strany={obecStrany}
       >
         <Grid container spacing={3} mt={-4} direction="column">
           <Grid item>
@@ -93,6 +107,7 @@ export default function Obec({ obecData, okresData }) {
                   view={view}
                   setMaxAge={setMaxAge}
                   setMaxRank={setMaxRank}
+                  setObecStrany={setObecStrany}
                 ></ObecStats>
               </Grid>
             </Container>

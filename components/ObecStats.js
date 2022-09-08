@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { tsvParse } from "d3-dsv";
 
@@ -8,7 +8,6 @@ import Tablica from "./Tablica";
 import Legenda from "./Legenda";
 
 import { Grid, CircularProgress } from "@mui/material";
-import { CoPresentOutlined } from "@mui/icons-material";
 
 const fetchData = async context => {
   const urlDetail =
@@ -32,6 +31,7 @@ const ObecStats = ({
   view,
   setMaxAge,
   setMaxRank,
+  setObecStrany,
 }) => {
   const [vybraneStrany, setVybraneStrany] = useState([]);
   const [vybraniKandidati, setVybraniKandidati] = useState([]);
@@ -45,7 +45,7 @@ const ObecStats = ({
   // const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
 
   const filterCandidates = (kandidati, filtr) => {
-    console.log("filtruju kandidáty");
+    //console.log("filtruju kandidáty");
     const result = kandidati
       .filter(k => filtr.zeny === true || k.POHLAVI === "M")
       .filter(k => filtr.muzi === true || k.POHLAVI === "F")
@@ -56,7 +56,8 @@ const ObecStats = ({
       )
       .filter(
         k => Number(k.VEK) >= filtr.vek[0] && Number(k.VEK) <= filtr.vek[1]
-      );
+      )
+      .filter(k => filtr.strany.includes(k.POR_STR_HL));
     return result;
   };
 
@@ -66,6 +67,12 @@ const ObecStats = ({
       setVybraniKandidati(result);
     }
   }, [filtr, kandidati.data, kandidati.isSuccess]);
+
+  useEffect(() => {
+    if (strany.isSuccess) {
+      setObecStrany(strany.data);
+    }
+  }, [strany.data, strany.isSuccess, setObecStrany]);
 
   useEffect(() => {
     if (kandidati.isSuccess) {
@@ -78,7 +85,7 @@ const ObecStats = ({
       });
       setMaxRank([Math.min(...ranks), Math.max(...ranks)]);
     }
-  }, [kandidati.data, kandidati.isSuccess, setMaxAge]);
+  }, [kandidati.data, kandidati.isSuccess, setMaxAge, setMaxRank]);
 
   if (kandidati.isLoading || strany.isLoading || vybraniKandidati.isLoading)
     return (
