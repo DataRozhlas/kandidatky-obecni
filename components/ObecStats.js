@@ -42,7 +42,7 @@ const ObecStats = ({
     fetchData
   );
   const strany = useQuery(["strany", rok, obecData, okresData], fetchData);
-  // const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
+  const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
 
   const filterCandidates = (kandidati, filtr) => {
     //console.log("filtruju kandidáty");
@@ -141,7 +141,7 @@ const ObecStats = ({
           vybarveniKandidati={vybraniKandidati}
           strany={strany.data}
           isMobile={isMobile}
-          //  ciselniky={ciselniky}
+          cvs={cvs.data}
         />
       </Grid>
     </Grid>

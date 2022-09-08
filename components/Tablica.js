@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import { DataGrid, csCZ } from "@mui/x-data-grid";
 import { Tooltip, Typography } from "@mui/material";
 
-const Tablica = ({ vybarveniKandidati, strany, isMobile }) => {
+const Tablica = ({ vybarveniKandidati, strany, isMobile, cvs }) => {
+  console.log(strany, vybarveniKandidati);
   const getFullName = params => {
     const prvniTitul = params.row.TITULPRED;
     return (
@@ -43,6 +44,23 @@ const Tablica = ({ vybarveniKandidati, strany, isMobile }) => {
           }}
         >
           {strana.NAZEVCELK}
+        </Typography>
+      </Tooltip>
+    );
+  };
+
+  const getNStrana = params => {
+    const strana = cvs.find(s => s.VSTRANA === params.row.NSTRANA);
+    return (
+      <Tooltip arrow enterTouchDelay={0} title={strana.NAZEVCELK}>
+        <Typography
+          style={{
+            cursor: "help",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {strana.ZKRATKAV8}
         </Typography>
       </Tooltip>
     );
@@ -96,12 +114,24 @@ const Tablica = ({ vybarveniKandidati, strany, isMobile }) => {
       },
       {
         field: "OSTRANA",
-        headerName: "Strana",
+        headerName: "Volební strana",
         description: "volební strana",
         renderCell: getOStrana,
         valueGetter: params => {
           const strana = strany.find(s => s.OSTRANA === params.row.OSTRANA);
           return strana.NAZEVCELK + " " + strana.ZKRATKAO8;
+        },
+        minWidth: 100,
+        flex: 3,
+      },
+      {
+        field: "NSTRANA",
+        headerName: "Navrhující strana",
+        description: "navrhující strana",
+        renderCell: getNStrana,
+        valueGetter: params => {
+          const strana = cvs.find(s => s.VSTRANA === params.row.NSTRANA);
+          return strana.NAZEVCELK + " " + strana.ZKRATKAV8;
         },
         minWidth: 100,
         flex: 3,
