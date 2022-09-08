@@ -11,7 +11,7 @@ import Image from "next/image";
 import imgLoader from "../utils/imgLoader";
 import Filters from "./Filters";
 
-const drawerWidth = 260;
+const drawerWidth = 320;
 
 function ResponsiveDrawer({
   window,

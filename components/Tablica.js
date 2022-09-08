@@ -3,7 +3,7 @@ import { DataGrid, csCZ } from "@mui/x-data-grid";
 import { Tooltip, Typography } from "@mui/material";
 
 const Tablica = ({ vybarveniKandidati, strany, isMobile, cvs }) => {
-  console.log(strany, vybarveniKandidati);
+  //console.log(strany, vybarveniKandidati);
   const getFullName = params => {
     const prvniTitul = params.row.TITULPRED;
     return (

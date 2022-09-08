@@ -63,6 +63,24 @@ export default function Obec({ obecData, okresData }) {
         <title>
           {`${obecData.NAZEVZAST} – interaktivní kandidátky pro komunální volby`}
         </title>
+        <meta
+          key="share-image"
+          property="og:image"
+          content={`https://www.irozhlas.cz/sites/default/files/styles/zpravy_facebook/public/uploader/screen_shot_2022-09-_220908-161443_pek.png?itok=qYyP5aMZ`}
+        />
+        <meta
+          property="og:description"
+          content={
+            "Prozkoumejte složení kandidátek v obecních volbách 2006 - 2022."
+          }
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@datarozhlas" />
+        <meta name="twitter:creator" content="@tocit" />
+        <meta
+          name="twitter:image"
+          content={`https://www.irozhlas.cz/sites/default/files/styles/zpravy_twitter/public/uploader/screen_shot_2022-09-_220908-161443_pek.png?itok=a1L_ibun`}
+        />
       </Head>
       <ResponsiveDrawer
         okres={false}
