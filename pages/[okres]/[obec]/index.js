@@ -6,7 +6,7 @@ import Head from "next/head";
 import NajdiObec from "../../../components/NajdiObec";
 import ObecInfo from "../../../components/ObecInfo";
 import RokSwitch from "../../../components/RokSwitch";
-import ViewSwitch from "../../../components/ViewSwitch";
+// import ViewSwitch from "../../../components/ViewSwitch";
 import ObecStats from "../../../components/ObecStats";
 import ResponsiveDrawer from "../../../components/ResponsiveDrawer";
 
@@ -114,7 +114,7 @@ export default function Obec({ obecData, okresData }) {
                   }}
                 >
                   <RokSwitch rok={rok} setRok={setRok} />
-                  <ViewSwitch view={view} setView={setView} />
+                  {/* <ViewSwitch view={view} setView={setView} /> */}
                 </Grid>{" "}
                 <ObecStats
                   rok={rok}

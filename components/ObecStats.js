@@ -87,7 +87,7 @@ const ObecStats = ({
     }
   }, [kandidati.data, kandidati.isSuccess, setMaxAge, setMaxRank]);
 
-  if (kandidati.isLoading || strany.isLoading || vybraniKandidati.isLoading)
+  if (kandidati.isLoading || strany.isLoading || cvs.isLoading)
     return (
       <Grid item>
         <CircularProgress />
