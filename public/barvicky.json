@@ -4,7 +4,12 @@
   { "nazev": "ČSSD", "barva": "#FB9179", "vstrana": "7", "pocet": 0 },
   { "nazev": "KSČM", "barva": "#D42B3C", "vstrana": "47", "pocet": 0 },
   { "nazev": "ODS", "barva": "#287AD7", "vstrana": "53", "pocet": 0 },
-  { "nazev": "Věci veřejné", "barva": "#57B5DB", "vstrana": "144", "pocet": 0 },
+  {
+    "nazev": "Nezávislí kandidáti",
+    "barva": "#57B5DB",
+    "vstrana": "80",
+    "pocet": 0
+  },
   { "nazev": "STAN", "barva": "#6A99AF", "vstrana": "166", "pocet": 0 },
   { "nazev": "Piráti", "barva": "#666666", "vstrana": "720", "pocet": 0 },
   { "nazev": "TOP09", "barva": "#AC5DAC", "vstrana": "721", "pocet": 0 },
