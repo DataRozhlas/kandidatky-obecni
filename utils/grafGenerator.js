@@ -8,7 +8,7 @@ import {
 } from "d3-force";
 
 const GrafGenerator = (container, kulicky, isMobile) => {
-  const viewBox = [-200, -200, 400, 400];
+  const viewBox = [-225, -225, 450, 450];
 
   if (kulicky.length > 1 && kulicky.find(k => k.vstrana === 0)) {
     // rozděl kuličky na obarvené podle strany a ostatní

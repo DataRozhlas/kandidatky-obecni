@@ -10,6 +10,8 @@ import RokSwitch from "../../../components/RokSwitch";
 import ObecStats from "../../../components/ObecStats";
 import ResponsiveDrawer from "../../../components/ResponsiveDrawer";
 
+import usePostMessageWithHeight from "../../../utils/usePostMessageWithHeight";
+
 import okresy from "../../../public/okresy.json";
 
 import styles from "../../../styles/Obec.module.css";
@@ -28,6 +30,10 @@ export default function Obec({ obecData, okresData }) {
   const [maxAge, setMaxAge] = useState([18, 102]);
   const [maxRank, setMaxRank] = useState([1, 70]);
 
+  const { containerRef, postHeightMessage } = usePostMessageWithHeight(
+    "cro-interaktivni-kandidatky"
+  );
+
   // když se načtou nové strany, tak je všechny vyber do filtru
 
   useEffect(() => {
@@ -41,11 +47,11 @@ export default function Obec({ obecData, okresData }) {
 
   // zjisti šířku obrazovky
   const [isMobile, setIsMobile] = useState(
-    typeof window === "undefined" ? true : window.innerWidth <= 600
+    typeof window === "undefined" ? true : window.innerWidth <= 620
   );
 
   useEffect(() => {
-    const handleWindowResize = () => setIsMobile(window.innerWidth <= 600);
+    const handleWindowResize = () => setIsMobile(window.innerWidth <= 620);
     if (typeof window === "undefined") {
       return;
     }
@@ -82,56 +88,59 @@ export default function Obec({ obecData, okresData }) {
           content={`https://www.irozhlas.cz/sites/default/files/styles/zpravy_twitter/public/uploader/screen_shot_2022-09-_220908-161443_pek.png?itok=a1L_ibun`}
         />
       </Head>
-      <ResponsiveDrawer
-        okres={false}
-        filtr={filtr}
-        setFiltr={setFiltr}
-        isMobile={isMobile}
-        maxAge={maxAge}
-        maxRank={maxRank}
-        strany={obecStrany}
-      >
-        <Grid container spacing={3} mt={-4} direction="column">
-          <Grid item>
-            <NajdiObec embed={true} />
-          </Grid>
-          <Grid item>
-            <Container sx={{ ml: 0 }}>
-              <Grid
-                container
-                direction="column"
-                spacing={2}
-                sx={{ maxWidth: "1000px" }}
-              >
-                <ObecInfo obecData={obecData} okresData={okresData} />
+      <div ref={containerRef}>
+        <ResponsiveDrawer
+          okres={false}
+          filtr={filtr}
+          setFiltr={setFiltr}
+          isMobile={isMobile}
+          maxAge={maxAge}
+          maxRank={maxRank}
+          strany={obecStrany}
+          embed={true}
+        >
+          <Grid container spacing={3} mt={-4} direction="column">
+            <Grid item>
+              <NajdiObec embed={true} />
+            </Grid>
+            <Grid item>
+              <Container sx={{ ml: 0 }}>
                 <Grid
-                  item
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "1rem",
-                    justifyContent: "space-between",
-                  }}
+                  container
+                  direction="column"
+                  spacing={2}
+                  sx={{ maxWidth: "1000px" }}
                 >
-                  <RokSwitch rok={rok} setRok={setRok} />
-                  {/* <ViewSwitch view={view} setView={setView} /> */}
-                </Grid>{" "}
-                <ObecStats
-                  rok={rok}
-                  obecData={obecData}
-                  okresData={okresData}
-                  isMobile={isMobile}
-                  filtr={filtr}
-                  view={view}
-                  setMaxAge={setMaxAge}
-                  setMaxRank={setMaxRank}
-                  setObecStrany={setObecStrany}
-                ></ObecStats>
-              </Grid>
-            </Container>
+                  <ObecInfo obecData={obecData} okresData={okresData} />
+                  <Grid
+                    item
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "1rem",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <RokSwitch rok={rok} setRok={setRok} />
+                    {/* <ViewSwitch view={view} setView={setView} /> */}
+                  </Grid>{" "}
+                  <ObecStats
+                    rok={rok}
+                    obecData={obecData}
+                    okresData={okresData}
+                    isMobile={isMobile}
+                    filtr={filtr}
+                    view={view}
+                    setMaxAge={setMaxAge}
+                    setMaxRank={setMaxRank}
+                    setObecStrany={setObecStrany}
+                  ></ObecStats>
+                </Grid>
+              </Container>
+            </Grid>
           </Grid>
-        </Grid>
-      </ResponsiveDrawer>
+        </ResponsiveDrawer>
+      </div>
     </>
   );
 }

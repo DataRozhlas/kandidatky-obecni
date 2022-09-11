@@ -11,7 +11,7 @@ import Image from "next/image";
 import imgLoader from "../utils/imgLoader";
 import Filters from "./Filters";
 
-const drawerWidth = 320;
+const drawerWidth = 280;
 
 function ResponsiveDrawer({
   window,
@@ -23,6 +23,7 @@ function ResponsiveDrawer({
   maxAge,
   maxRank,
   strany,
+  embed,
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -56,18 +57,20 @@ function ResponsiveDrawer({
               <FilterAltSharpIcon />
             </IconButton>
           )}
-          <Link
-            href="https://irozhlas.cz/"
-            sx={{ ml: "auto", mr: { sm: "auto" } }}
-          >
-            <Image
-              loader={imgLoader}
-              alt="iROZHLAS.cz"
-              src="https://data.irozhlas.cz/hrad-or-not/img/irozhlas.svg"
-              height={40}
-              width={120}
-            ></Image>
-          </Link>
+          {!embed && (
+            <Link
+              href="https://irozhlas.cz/"
+              sx={{ ml: "auto", mr: { sm: "auto" } }}
+            >
+              <Image
+                loader={imgLoader}
+                alt="iROZHLAS.cz"
+                src="https://data.irozhlas.cz/hrad-or-not/img/irozhlas.svg"
+                height={40}
+                width={120}
+              ></Image>
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
       <Box

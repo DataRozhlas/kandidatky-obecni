@@ -41,11 +41,11 @@ export default function Obec({ obecData, okresData }) {
 
   // zjisti šířku obrazovky
   const [isMobile, setIsMobile] = useState(
-    typeof window === "undefined" ? true : window.innerWidth <= 600
+    typeof window === "undefined" ? true : window.innerWidth <= 620
   );
 
   useEffect(() => {
-    const handleWindowResize = () => setIsMobile(window.innerWidth <= 600);
+    const handleWindowResize = () => setIsMobile(window.innerWidth <= 620);
     if (typeof window === "undefined") {
       return;
     }
