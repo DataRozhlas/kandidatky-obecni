@@ -17,7 +17,7 @@ const fetchAutocomplete = async () => {
   return data;
 };
 
-export default function NajdiObec() {
+export default function NajdiObec({ embed }) {
   const router = useRouter();
   const { isLoading, error, data } = useQuery(
     "autocomplete",
@@ -45,7 +45,9 @@ export default function NajdiObec() {
         noOptionsText="Obec nenalezena"
         onChange={(e, value) => {
           if (value) {
-            router.push(`/${value.value}`);
+            embed
+              ? router.push(`/${value.value}/embed`)
+              : router.push(`/${value.value}`);
           }
         }}
       />
