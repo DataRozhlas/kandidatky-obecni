@@ -12,12 +12,11 @@ import ResponsiveDrawer from "../../../components/ResponsiveDrawer";
 
 import okresy from "../../../public/okresy.json";
 
-import styles from "../../../styles/Obec.module.css";
-
 export default function Obec({ obecData, okresData }) {
   const [rok, setRok] = useState("2022");
   const [obecStrany, setObecStrany] = useState([]);
   const [filtr, setFiltr] = useState({
+    mandat: "yes",
     muzi: true,
     zeny: true,
     poradi: [1, 70],
@@ -139,7 +138,7 @@ export default function Obec({ obecData, okresData }) {
 export async function getStaticProps({ params }) {
   //info o obci
   const okresZastupitelstva = await fetch(
-    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/${params.okres}/zastupitelstva.tsv`
+    `https://data.irozhlas.cz/kandidatky-obecni-updated/2022/${params.okres}/zastupitelstva.tsv`
   )
     .then(res => res.text())
     .then(res => tsvParse(res));
@@ -156,7 +155,7 @@ export async function getStaticProps({ params }) {
 }
 export async function getStaticPaths() {
   const zastupitelstva = await fetch(
-    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/zastupitelstva.tsv`
+    `https://data.irozhlas.cz/kandidatky-obecni-updated/2022/zastupitelstva.tsv`
   )
     .then(res => res.text())
     .then(res => tsvParse(res));

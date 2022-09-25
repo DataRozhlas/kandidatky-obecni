@@ -15,7 +15,7 @@ const fetchData = async context => {
       ? "2022/cvs.tsv"
       : `${context.queryKey[1]}/${context.queryKey[3].key}/${context.queryKey[2].key}/${context.queryKey[0]}.tsv`;
   const data = await fetch(
-    `https://data.irozhlas.cz/kandidatky-obecni-data/${urlDetail}`
+    `https://data.irozhlas.cz/kandidatky-obecni-updated/${urlDetail}`
   )
     .then(res => res.text())
     .then(res => tsvParse(res));
@@ -45,8 +45,22 @@ const ObecStats = ({
   const cvs = useQuery(["cvs"], fetchData, { staleTime: Infinity });
 
   const filterCandidates = (kandidati, filtr) => {
-    //console.log("filtruju kandidáty");
+    console.log("filtruju kandidáty");
     const result = kandidati
+      .filter(k => {
+        if (filtr.mandat === "yes") {
+          return k.MANDAT === "1";
+        }
+        if (filtr.mandat === "preference") {
+          return k.MANDATPREF === "1";
+        }
+        if (filtr.mandat === "no") {
+          return k.MANDAT === "0";
+        }
+        if (filtr.mandat === "all") {
+          return true;
+        }
+      })
       .filter(k => filtr.zeny === true || k.POHLAVI === "M")
       .filter(k => filtr.muzi === true || k.POHLAVI === "F")
       .filter(

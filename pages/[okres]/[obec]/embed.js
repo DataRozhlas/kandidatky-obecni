@@ -148,7 +148,7 @@ export default function Obec({ obecData, okresData }) {
 export async function getStaticProps({ params }) {
   //info o obci
   const okresZastupitelstva = await fetch(
-    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/${params.okres}/zastupitelstva.tsv`
+    `https://data.irozhlas.cz/kandidatky-obecni-updated/2022/${params.okres}/zastupitelstva.tsv`
   )
     .then(res => res.text())
     .then(res => tsvParse(res));
@@ -165,7 +165,7 @@ export async function getStaticProps({ params }) {
 }
 export async function getStaticPaths() {
   const zastupitelstva = await fetch(
-    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/zastupitelstva.tsv`
+    `https://data.irozhlas.cz/kandidatky-obecni-updated/2022/zastupitelstva.tsv`
   )
     .then(res => res.text())
     .then(res => tsvParse(res));

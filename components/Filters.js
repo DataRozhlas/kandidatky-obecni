@@ -7,6 +7,7 @@ import {
   Slider,
 } from "@mui/material";
 
+import Mandat from "./controls/Mandat";
 import Pohlavi from "./controls/Pohlavi";
 import Strany from "./controls/Strany";
 
@@ -28,7 +29,8 @@ const Filters = ({ filtr, setFiltr, maxAge, maxRank, strany }) => {
       </Box>
       <Toolbar>
         <FormControl component="fieldset" className={styles.bocniFieldset}>
-          <Pohlavi filtr={filtr} setFiltr={setFiltr} />
+          <Mandat setFiltr={setFiltr} />
+          <Pohlavi setFiltr={setFiltr} />
           <FormControl className={styles.bocniFieldset}>
             <InputLabel className={styles.bocniLabel}>
               POŘADÍ NA KANDIDÁTCE

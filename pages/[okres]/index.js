@@ -14,7 +14,7 @@ export async function getStaticProps({ params }) {
   // generate data for each okres
   const okresData = okresy.find(okres => okres.key === params.okres);
   const zastupitelstva = await fetch(
-    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/${okresData.key}/zastupitelstva.tsv`
+    `https://data.irozhlas.cz/kandidatky-obecni-updated/2022/${okresData.key}/zastupitelstva.tsv`
   ).then(res => res.text());
   return {
     props: {

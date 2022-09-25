@@ -10,7 +10,7 @@ import { tsvParse } from "d3-dsv";
 
 const fetchAutocomplete = async () => {
   const data = await fetch(
-    `https://data.irozhlas.cz/kandidatky-obecni-data/2022/zast-autocomplete.tsv`
+    `https://data.irozhlas.cz/kandidatky-obecni-updated/2022/zast-autocomplete.tsv`
   )
     .then(res => res.text())
     .then(res => tsvParse(res));
